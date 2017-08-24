@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Raw Launcher</string>
-
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="hint_launch">Launch…</string>
+    <string name="contentDescription_launcher_icon">Launcher icon</string>
 </resources>
