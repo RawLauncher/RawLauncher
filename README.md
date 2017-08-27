@@ -1,2 +1,2 @@
 # RawLauncher
-A minimalistic launcher inspired by T-UI
+A minimalistic launcher, you just tap the name of the application to launch it.
