@@ -15,7 +15,7 @@ import com.sjcqs.rawlauncher.utils.interfaces.OnItemLaunchedListener;
 import com.sjcqs.rawlauncher.views.UserInputView;
 
 /**
- * The main launcher activity
+ * The main launcher context
  */
 public class RawLauncher extends AppCompatActivity {
 
@@ -36,7 +36,7 @@ public class RawLauncher extends AppCompatActivity {
 
         View rootView = getLayoutInflater().inflate(R.layout.activity_raw_launcher, null);
         setContentView(rootView);
-        appManager = new AppManager(this);
+        appManager = new AppManager(this, getSupportLoaderManager());
         inputView = (UserInputView) findViewById(R.id.user_input_view);
         suggestionRecyclerView = (RecyclerView) findViewById(R.id.suggestions);
         suggestionManager = new SuggestionManager(this, getSupportLoaderManager(), appManager);
@@ -116,5 +116,6 @@ public class RawLauncher extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         inputView.clearInput();
+        appManager.reload();
     }
 }

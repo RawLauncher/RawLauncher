@@ -1,9 +1,9 @@
 package com.sjcqs.rawlauncher.utils.interfaces;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
 
 import com.sjcqs.rawlauncher.items.Item;
 import com.sjcqs.rawlauncher.items.suggestions.Suggestion;
@@ -17,11 +17,13 @@ import java.util.List;
 
 public abstract class Manager implements LoaderManager.LoaderCallbacks<List<Item>>{
 
-    protected final AppCompatActivity activity;
+    protected final Context context;
+    protected final LoaderManager loaderManager;
     protected List<Item> items;
 
-    protected Manager(AppCompatActivity activity) {
-        this.activity = activity;
+    protected Manager(Context context, LoaderManager loaderManager) {
+        this.context = context;
+        this.loaderManager = loaderManager;
     }
 
     @Override

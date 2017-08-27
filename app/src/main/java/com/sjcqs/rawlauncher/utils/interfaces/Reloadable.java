@@ -9,9 +9,9 @@ import java.util.List;
  * Created by satyan on 8/25/17.
  */
 
-public interface SuggestionUpdator {
+public interface Reloadable {
 
-    SuggestionUpdate updateSuggestions(String input, List<Suggestion> current);
+    void reload();
 
     class SuggestionUpdate{
         private SuggestionList toRemove;

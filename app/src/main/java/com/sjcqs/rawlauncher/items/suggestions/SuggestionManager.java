@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,16 +16,14 @@ import android.widget.TextView;
 
 import com.sjcqs.rawlauncher.R;
 import com.sjcqs.rawlauncher.items.Item;
-import com.sjcqs.rawlauncher.items.apps.App;
 import com.sjcqs.rawlauncher.items.apps.AppManager;
+import com.sjcqs.rawlauncher.utils.LoaderUtils;
 import com.sjcqs.rawlauncher.utils.interfaces.OnItemLaunchedListener;
-import com.sjcqs.rawlauncher.utils.interfaces.SuggestionUpdator;
 import com.sjcqs.rawlauncher.utils.interfaces.Suggestor;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by satyan on 8/25/17.
@@ -53,7 +50,7 @@ public class SuggestionManager extends  RecyclerView.Adapter<SuggestionManager.I
     public void suggest(String input) {
         Bundle bundle = new Bundle();
         bundle.putString(context.getString(R.string.arg_input),input);
-        loaderManager.restartLoader(0,bundle,this);
+        loaderManager.restartLoader(LoaderUtils.SUGGESTION_LOADER,bundle,this);
     }
 
     @Override

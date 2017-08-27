@@ -5,6 +5,7 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import com.sjcqs.rawlauncher.items.apps.AppManager;
+import com.sjcqs.rawlauncher.items.apps.AppsLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,13 @@ public class SuggestionLoader extends AsyncTaskLoader<List<Suggestion>> {
     @Override
     public List<Suggestion> loadInBackground() {
         items = new ArrayList<>();
+        while (!appManager.isLoaded()){
+            try {
+                wait(100);
+            } catch (InterruptedException e) {
+                Log.e(TAG, "loadInBackground: ", e);
+            }
+        }
         items.addAll(appManager.getSuggestions(input));
         return items;
     }
