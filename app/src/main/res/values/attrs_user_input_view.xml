@@ -1,0 +1,8 @@
+<resources>
+    <declare-styleable name="UserInputView">
+        <attr name="inputHint" format="string" />
+        <attr name="inputIcon" format="color|reference" />
+        <attr name="requestFocus" format="boolean"/>
+        <attr name="showClearButton" format="boolean"/>
+    </declare-styleable>
+</resources>
