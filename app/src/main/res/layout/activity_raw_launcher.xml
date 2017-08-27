@@ -9,20 +9,25 @@
     tools:context="com.sjcqs.rawlauncher.RawLauncher">
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/suggestions"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/userInputView"
+        android:layout_above="@+id/user_input_view"
+        android:foregroundGravity="bottom"
+        app:reverseLayout="true"
         android:clipToPadding="false"
         android:elevation="0dp"
-        android:scrollbars="vertical"/>
+        android:scrollbars="vertical"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
 
     <com.sjcqs.rawlauncher.views.UserInputView
-        android:id="@+id/userInputView"
+        android:id="@+id/user_input_view"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:UserInputView_hint="@string/hint_launch"
-        app:UserInputView_icon="@drawable/ic_launch_black_36dp"
+        app:inputHint="@string/hint_launch"
+        app:inputIcon="@drawable/ic_launch_black_36dp"
+        app:showClearButton="false"
         android:layout_marginTop="@dimen/spacing_small"/>
 
 </RelativeLayout>

@@ -5,7 +5,11 @@
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_secondary</item>
         <item name="android:textColorPrimaryInverse">@color/color_black</item>
-        <item name="android:colorBackground">@color/color_primary_dark</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowShowWallpaper">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
         <item name="android:colorButtonNormal">@color/color_secondary_dark</item>
         <item name="android:statusBarColor">@color/color_primary_dark</item>
         <item name="android:textColorPrimary">@color/color_white</item>
@@ -14,6 +18,11 @@
     <style name="LauncherTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowShowWallpaper">true</item>
+    </style>
+
+    <style name="label_style">
+        <item name="android:textSize">@dimen/font_large</item>
+        <item name="android:textColor">@color/color_white</item>
     </style>
 
 </resources>
