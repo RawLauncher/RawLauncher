@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.sjcqs.rawlauncher.items.Item;
 import com.sjcqs.rawlauncher.items.apps.AppManager;
+import com.sjcqs.rawlauncher.items.device_settings.DeviceSettingManager;
 import com.sjcqs.rawlauncher.items.suggestions.SuggestionManager;
 import com.sjcqs.rawlauncher.utils.interfaces.OnItemLaunchedListener;
 import com.sjcqs.rawlauncher.views.UserInputView;
@@ -27,6 +28,7 @@ public class RawLauncher extends AppCompatActivity {
     private static final String TAG = RawLauncher.class.getName();
     private UserInputView inputView;
     private AppManager appManager;
+    private DeviceSettingManager deviceSettingManager;
     private SuggestionManager suggestionManager;
     private RecyclerView suggestionRecyclerView;
 
@@ -37,9 +39,11 @@ public class RawLauncher extends AppCompatActivity {
         View rootView = getLayoutInflater().inflate(R.layout.activity_raw_launcher, null);
         setContentView(rootView);
         appManager = new AppManager(this, getSupportLoaderManager());
+        deviceSettingManager = new DeviceSettingManager(this,getSupportLoaderManager());
         inputView = (UserInputView) findViewById(R.id.user_input_view);
+
         suggestionRecyclerView = (RecyclerView) findViewById(R.id.suggestions);
-        suggestionManager = new SuggestionManager(this, getSupportLoaderManager(), appManager);
+        suggestionManager = new SuggestionManager(this, getSupportLoaderManager(), appManager, deviceSettingManager);
         suggestionRecyclerView.setAdapter(suggestionManager);
 
         suggestionRecyclerView.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
@@ -81,7 +85,7 @@ public class RawLauncher extends AppCompatActivity {
         suggestionManager.setOnItemLaunchedListener(new OnItemLaunchedListener() {
             @Override
             public void onItemLaunched(Item item) {
-                inputView.setInput(item.getInput());
+                inputView.clearInput();
             }
         });
 
@@ -115,7 +119,7 @@ public class RawLauncher extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        inputView.clearInput();
+        inputView.showKeyboard(this);
         appManager.reload();
     }
 }

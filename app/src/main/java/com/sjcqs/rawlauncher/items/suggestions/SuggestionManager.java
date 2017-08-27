@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.sjcqs.rawlauncher.R;
 import com.sjcqs.rawlauncher.items.Item;
 import com.sjcqs.rawlauncher.items.apps.AppManager;
+import com.sjcqs.rawlauncher.items.device_settings.DeviceSettingManager;
 import com.sjcqs.rawlauncher.utils.LoaderUtils;
 import com.sjcqs.rawlauncher.utils.interfaces.OnItemLaunchedListener;
 import com.sjcqs.rawlauncher.utils.interfaces.Suggestor;
@@ -32,14 +33,16 @@ import java.util.List;
 public class SuggestionManager extends  RecyclerView.Adapter<SuggestionManager.ItemHolder> implements LoaderManager.LoaderCallbacks<List<Suggestion>>,Suggestor {
     private static final String TAG = SuggestionManager.class.getName();
     private final AppManager appManager;
+    private final DeviceSettingManager deviceSettingManager;
     private final Context context;
     private final LoaderManager loaderManager;
     private OnItemLaunchedListener onItemLaunchedListener;
 
     private List<Suggestion> suggestions;
 
-    public SuggestionManager(final Context context, LoaderManager loaderManager, AppManager appManager) {
+    public SuggestionManager(final Context context, LoaderManager loaderManager, AppManager appManager, DeviceSettingManager deviceSettingManager) {
         this.appManager = appManager;
+        this.deviceSettingManager = deviceSettingManager;
         this.context = context;
         this.loaderManager = loaderManager;
         suggestions = new ArrayList<>();
@@ -110,7 +113,7 @@ public class SuggestionManager extends  RecyclerView.Adapter<SuggestionManager.I
     @Override
     public Loader<List<Suggestion>> onCreateLoader(int id, Bundle args) {
         String str = args.getString(context.getString(R.string.arg_input));
-        return new SuggestionLoader(context, str, appManager);
+        return new SuggestionLoader(context, str, appManager, deviceSettingManager);
     }
 
     @Override

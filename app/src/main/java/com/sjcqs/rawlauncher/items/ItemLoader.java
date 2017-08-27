@@ -3,20 +3,24 @@ package com.sjcqs.rawlauncher.items;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
+import java.util.List;
+
 /**
  * Created by satyan on 8/27/17.
  */
 
-public abstract class ItemLoader<T> extends AsyncTaskLoader<T> {
+public abstract class ItemLoader<T extends Item> extends AsyncTaskLoader<List<T>> {
 
-    protected T items;
+    protected List<T> items;
+    protected Context context;
 
     public ItemLoader(Context context) {
         super(context);
+        this.context = context;
     }
 
     @Override
-    public void deliverResult(T data) {
+    public void deliverResult(List<T> data) {
         if (isReset()){
             if (data != null){
                 cleanUp(data);
@@ -56,7 +60,7 @@ public abstract class ItemLoader<T> extends AsyncTaskLoader<T> {
     }
 
     @Override
-    public void onCanceled(T data) {
+    public void onCanceled(List<T> data) {
         super.onCanceled(data);
         cleanUp(data);
     }
@@ -66,7 +70,7 @@ public abstract class ItemLoader<T> extends AsyncTaskLoader<T> {
         cancelLoad();
     }
 
-    private void cleanUp(T apps){
+    private void cleanUp(List<T> apps){
         // clean up used resources
     }
 }

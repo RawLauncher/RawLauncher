@@ -1,9 +1,10 @@
 package com.sjcqs.rawlauncher.items.apps;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.support.v4.content.AsyncTaskLoader;
+import android.graphics.drawable.Drawable;
 
 import com.sjcqs.rawlauncher.items.Item;
 import com.sjcqs.rawlauncher.items.ItemLoader;
@@ -16,7 +17,7 @@ import java.util.List;
  * Created by satyan on 8/24/17.
  */
 
-public class AppsLoader extends ItemLoader<List<Item>> {
+public class AppsLoader extends ItemLoader<App> {
     public static final int GET_NO_TAG = 0;
     private final PackageManager packageManager;
 
@@ -27,7 +28,7 @@ public class AppsLoader extends ItemLoader<List<Item>> {
 
 
     @Override
-    public List<Item> loadInBackground() {
+    public List<App> loadInBackground() {
         final Context context = getContext();
 
         List<ApplicationInfo> infos = packageManager.getInstalledApplications(GET_NO_TAG);
@@ -36,22 +37,29 @@ public class AppsLoader extends ItemLoader<List<Item>> {
             infos = new ArrayList<>();
         }
 
-        List<Item> items = new ArrayList<>(infos.size());
+        List<App> items = new ArrayList<>(infos.size());
         for (ApplicationInfo info : infos) {
             String pkg = info.packageName;
+            String label;
+            Drawable icon;
+            Intent intent;
+
+            CharSequence sequence = info.loadLabel(context.getPackageManager());
+            label = sequence  != null ? sequence.toString() : info.packageName;
+
+            icon = info.loadIcon(context.getPackageManager());
+            icon = icon != null ?
+                    icon
+                    : context.getResources().getDrawable(android.R.drawable.sym_def_app_icon,null);
+            intent = packageManager.getLaunchIntentForPackage(info.packageName);
 
             if (packageManager.getLaunchIntentForPackage(pkg) != null){
-                App app = new App(context,info);
-                app.loadLabel();
+                App app = new App(info,label,icon,intent);
                 items.add(app);
             }
         }
 
         Collections.sort(items, Item.ALPHA_COMPARATOR);
         return items;
-    }
-
-    private void cleanUp(List<App> apps){
-        // clean up used resources
     }
 }

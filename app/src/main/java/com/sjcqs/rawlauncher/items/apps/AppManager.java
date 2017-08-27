@@ -25,7 +25,7 @@ import java.util.List;
  * Manage
  */
 
-public class AppManager extends Manager implements Reloadable {
+public class AppManager extends Manager<App> implements Reloadable {
     private static final String TAG = AppManager.class.getName();
 
     public AppManager(Context context, LoaderManager loaderManager) {
@@ -34,43 +34,13 @@ public class AppManager extends Manager implements Reloadable {
     }
 
     @Override
-    public Loader<List<Item>> onCreateLoader(int id, Bundle args) {
+    public Loader<List<App>> onCreateLoader(int id, Bundle args) {
         return new AppsLoader(context);
-    }
-
-    @Override
-    public Intent getIntent(String str) {
-        str = StringUtil.normalize(str);
-        for (Item app : items) {
-            if (str.equalsIgnoreCase(app.getLabel())){
-                return app.getIntent();
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public Collection<? extends Suggestion> getSuggestions(String input) {
-        List<Suggestion> suggestions = new ArrayList<>();
-        if (isLoaded()) {
-            for (Item app : items) {
-                String str2 = app.getLabel();
-                double rate = StringUtil.canBeSuggested(input, str2);
-                if (rate < StringUtil.MAX_RATE) {
-                    suggestions.add(new Suggestion(app, rate));
-                }
-            }
-        }
-        return suggestions;
     }
 
     @Override
     public void reload() {
         loaderManager.restartLoader(LoaderUtils.APP_LOADER,null,this);
-    }
 
-    @Override
-    public boolean isLoaded() {
-        return items != null;
     }
 }

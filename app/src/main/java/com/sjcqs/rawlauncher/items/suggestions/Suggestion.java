@@ -1,8 +1,5 @@
 package com.sjcqs.rawlauncher.items.suggestions;
 
-import android.content.Intent;
-import android.util.Log;
-
 import com.sjcqs.rawlauncher.items.Item;
 
 import java.text.Collator;
@@ -27,20 +24,12 @@ public class Suggestion extends Item{
                 }
             };
 
-    private final Item item;
     private final double rate;
 
 
     public Suggestion(Item item, double rate) {
-        label = item.getLabel();
-        icon = item.getIcon();
-        this.item = item;
+        super(item.getLabel(),item.getIcon(), item.getIntent());
         this.rate = rate;
-    }
-
-    @Override
-    public Intent getIntent() {
-        return item.getIntent();
     }
 
     public double getRate() {
@@ -48,6 +37,6 @@ public class Suggestion extends Item{
     }
 
     public Item getItem() {
-        return item;
+        return this;
     }
 }

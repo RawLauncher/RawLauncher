@@ -12,6 +12,7 @@ import java.util.Locale;
  */
 
 public abstract class Item {
+
     public static final Comparator<? super Item> ALPHA_COMPARATOR = new Comparator<Item>() {
         private final Collator COLLATOR = Collator.getInstance(Locale.getDefault());
 
@@ -29,8 +30,15 @@ public abstract class Item {
         }
     };
 
-    protected CharSequence label;
-    protected Drawable icon;
+    protected final CharSequence label;
+    protected final Drawable icon;
+    protected final Intent intent;
+
+    protected Item(String label, Drawable drawable, Intent intent){
+        this.label = label;
+        this.icon = drawable;
+        this.intent = intent;
+    }
 
     public String getLabel(){
         return label.toString();
@@ -40,9 +48,16 @@ public abstract class Item {
         return icon;
     }
 
-    public abstract Intent getIntent();
+    public Intent getIntent(){
+        return intent;
+    }
 
     public String getInput() {
         return label.toString();
+    }
+
+    @Override
+    public String toString() {
+        return label + ": " + icon.toString();
     }
 }

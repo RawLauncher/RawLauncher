@@ -5,6 +5,7 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import com.sjcqs.rawlauncher.items.apps.AppManager;
+import com.sjcqs.rawlauncher.items.device_settings.DeviceSettingManager;
 import com.sjcqs.rawlauncher.items.apps.AppsLoader;
 
 import java.util.ArrayList;
@@ -17,18 +18,30 @@ import java.util.List;
 public class SuggestionLoader extends AsyncTaskLoader<List<Suggestion>> {
     private static final String TAG = SuggestionLoader.class.getName();
     private String input;
-    private AppManager appManager;
+    private final AppManager appManager;
+    private final DeviceSettingManager deviceSettingManager;
     private List<Suggestion> items = null;
 
-    public SuggestionLoader(Context context, String input, AppManager appManager) {
+    public SuggestionLoader(Context context, String input, AppManager appManager, DeviceSettingManager deviceSettingManager) {
         super(context);
         this.input = input;
         this.appManager = appManager;
+        this.deviceSettingManager = deviceSettingManager;
     }
 
     @Override
     public List<Suggestion> loadInBackground() {
         items = new ArrayList<>();
+        // DEVICE SETTINGS
+        while (!deviceSettingManager.isLoaded()){
+            try {
+                wait(100);
+            } catch (InterruptedException e){
+                Log.e(TAG, "loadInBackground: ", e);
+            }
+        }
+        items.addAll(deviceSettingManager.getSuggestions(input));
+        // APPS
         while (!appManager.isLoaded()){
             try {
                 wait(100);
@@ -37,6 +50,7 @@ public class SuggestionLoader extends AsyncTaskLoader<List<Suggestion>> {
             }
         }
         items.addAll(appManager.getSuggestions(input));
+
         return items;
     }
 
