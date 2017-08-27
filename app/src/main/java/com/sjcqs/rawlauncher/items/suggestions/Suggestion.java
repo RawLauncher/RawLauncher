@@ -22,7 +22,6 @@ public class Suggestion extends Item{
                 public int compare(Suggestion item1, Suggestion item2) {
                     double rate1 = item1.getRate(), rate2 = item2.getRate();
                     int rateCmp = Double.compare(rate1,rate2);
-                    Log.d("Compare", rateCmp + ": "+ COLLATOR.compare(item1.getLabel(), item2.getLabel()));
                     return (rateCmp != 0 ?
                             rateCmp : (COLLATOR.compare(item1.getLabel(), item2.getLabel())));
                 }

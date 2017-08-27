@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface SuggestionUpdator {
 
-    SuggestionUpdate updateSuggestions(String input, SuggestionList current);
+    SuggestionUpdate updateSuggestions(String input, List<Suggestion> current);
 
     class SuggestionUpdate{
         private SuggestionList toRemove;

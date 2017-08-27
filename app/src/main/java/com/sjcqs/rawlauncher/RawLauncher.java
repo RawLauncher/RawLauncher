@@ -26,7 +26,6 @@ public class RawLauncher extends AppCompatActivity {
     private static final int UI_ANIMATION_DELAY = 300;
     private static final String TAG = RawLauncher.class.getName();
     private UserInputView inputView;
-    private View rootView;
     private AppManager appManager;
     private SuggestionManager suggestionManager;
     private RecyclerView suggestionRecyclerView;
@@ -35,12 +34,12 @@ public class RawLauncher extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        rootView = getLayoutInflater().inflate(R.layout.activity_raw_launcher,null);
+        View rootView = getLayoutInflater().inflate(R.layout.activity_raw_launcher, null);
         setContentView(rootView);
         appManager = new AppManager(this);
         inputView = (UserInputView) findViewById(R.id.user_input_view);
         suggestionRecyclerView = (RecyclerView) findViewById(R.id.suggestions);
-        suggestionManager = new SuggestionManager(this, appManager);
+        suggestionManager = new SuggestionManager(this, getSupportLoaderManager(), appManager);
         suggestionRecyclerView.setAdapter(suggestionManager);
 
         suggestionRecyclerView.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
