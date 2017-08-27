@@ -21,7 +21,7 @@
             android:enabled="true"
             android:excludeFromRecents="true"
 
-            android:windowSoftInputMode="stateVisible|adjustPan">
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.HOME" />

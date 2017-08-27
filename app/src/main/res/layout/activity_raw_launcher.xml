@@ -5,18 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     android:padding="8dp"
     tools:context="com.sjcqs.rawlauncher.RawLauncher">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/suggestions"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/user_input_view"
         android:foregroundGravity="bottom"
         app:reverseLayout="true"
         android:clipToPadding="false"
-        android:elevation="0dp"
         android:scrollbars="vertical"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
 
