@@ -4,5 +4,6 @@
     <string name="contentDescription_launcher_icon">Launcher icon</string>
     <string name="contentDescription_icon">Item icon</string>
     <string name="contentDescription_button_clear">Clear the input</string>
-    <string name="arg_input">arg_input</string>
+    <string name="arg_input">Input argument</string>
+    <string name="settings">Settings</string>
 </resources>

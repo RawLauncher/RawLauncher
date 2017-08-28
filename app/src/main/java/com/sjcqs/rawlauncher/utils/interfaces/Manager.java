@@ -56,13 +56,11 @@ public abstract class Manager<T extends Item> implements LoaderManager.LoaderCal
 
     public Collection<? extends Suggestion> getSuggestions(String input){
         List<Suggestion> suggestions = new ArrayList<>();
-        if (isLoaded()) {
-            for (Item app : items) {
-                String str2 = app.getLabel();
-                double rate = StringUtil.canBeSuggested(input, str2);
-                if (rate < StringUtil.MAX_RATE) {
-                    suggestions.add(new Suggestion(app, rate));
-                }
+        for (Item app : items) {
+            String str2 = app.getLabel();
+            double rate = StringUtil.canBeSuggested(input, str2);
+            if (rate < StringUtil.MAX_RATE) {
+                suggestions.add(new Suggestion(app, rate));
             }
         }
         return suggestions;
