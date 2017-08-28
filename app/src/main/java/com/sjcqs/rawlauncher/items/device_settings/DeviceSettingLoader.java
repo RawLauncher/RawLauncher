@@ -8,6 +8,7 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 
 import com.sjcqs.rawlauncher.R;
+import com.sjcqs.rawlauncher.items.Item;
 import com.sjcqs.rawlauncher.items.ItemLoader;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.List;
  * Created by satyan on 8/27/17.
  */
 
-public class DeviceSettingLoader extends ItemLoader<DeviceSetting> {
+public class DeviceSettingLoader extends ItemLoader {
     private final static String[][] SETTINGS_ACTION = {
             {Settings.ACTION_ACCESSIBILITY_SETTINGS,"Accessibility"},
             {Settings.ACTION_ADD_ACCOUNT,"Add Account"},
@@ -41,7 +42,7 @@ public class DeviceSettingLoader extends ItemLoader<DeviceSetting> {
             {Settings.ACTION_PRINT_SETTINGS,"Print"},
             {Settings.ACTION_PRIVACY_SETTINGS,"Privacy"},
             {Settings.ACTION_QUICK_LAUNCH_SETTINGS,"Quick Launch"},
-            {Settings.ACTION_SEARCH_SETTINGS,"Search"},
+            {Settings.ACTION_SEARCH_SETTINGS,"InputSearch"},
             {Settings.ACTION_SECURITY_SETTINGS,"Security"},
             {Settings.ACTION_SOUND_SETTINGS,"Sound"},
             {Settings.ACTION_SYNC_SETTINGS,"Sync"},
@@ -56,7 +57,7 @@ public class DeviceSettingLoader extends ItemLoader<DeviceSetting> {
     }
 
     @Override
-    public List<DeviceSetting> loadInBackground() {
+    public List<Item> loadInBackground() {
         items = new ArrayList<>();
         Drawable icon = context.getDrawable(R.drawable.ic_settings_black_24dp);
         if (icon != null){
@@ -67,7 +68,6 @@ public class DeviceSettingLoader extends ItemLoader<DeviceSetting> {
             Intent intent = new Intent(action[0]);
             DeviceSetting setting = new DeviceSetting(action[0],action[1],icon, intent);
             items.add(setting);
-            Log.d(TAG, "loadInBackground: "+setting.toString());
         }
         return items;
     }

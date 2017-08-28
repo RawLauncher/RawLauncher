@@ -1,26 +1,21 @@
 package com.sjcqs.rawlauncher;
 
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.sjcqs.rawlauncher.items.Item;
-import com.sjcqs.rawlauncher.items.apps.AppManager;
-import com.sjcqs.rawlauncher.items.device_settings.DeviceSettingManager;
 import com.sjcqs.rawlauncher.items.suggestions.SuggestionManager;
+import com.sjcqs.rawlauncher.utils.LoaderUtils;
+import com.sjcqs.rawlauncher.utils.interfaces.Manager;
 import com.sjcqs.rawlauncher.utils.interfaces.OnItemLaunchedListener;
 import com.sjcqs.rawlauncher.views.UserInputView;
+
+import java.util.List;
 
 /**
  * The main launcher context
@@ -28,16 +23,10 @@ import com.sjcqs.rawlauncher.views.UserInputView;
  * IDEAS: ouvrir quand application seule, trier application par utilisation, raccourcis
  */
 public class RawLauncher extends AppCompatActivity {
-
-    /**
-     * Some older devices needs a small delay between UI widget updates
-     * and a change of the status and navigation bar.
-     */
-    private static final int UI_ANIMATION_DELAY = 300;
     private static final String TAG = RawLauncher.class.getName();
+
     private UserInputView inputView;
-    private AppManager appManager;
-    private DeviceSettingManager deviceSettingManager;
+    private List<Manager> managers;
     private SuggestionManager suggestionManager;
     private RecyclerView suggestionRecyclerView;
 
@@ -47,13 +36,12 @@ public class RawLauncher extends AppCompatActivity {
 
         final View rootView = getLayoutInflater().inflate(R.layout.activity_raw_launcher, null);
         setContentView(rootView);
-        appManager = new AppManager(this, getSupportLoaderManager());
-        deviceSettingManager = new DeviceSettingManager(this,getSupportLoaderManager());
 
+        managers = LoaderUtils.loadManagers(this, getSupportLoaderManager());
         inputView = (UserInputView) findViewById(R.id.user_input_view);
 
         suggestionRecyclerView = (RecyclerView) findViewById(R.id.suggestions);
-        suggestionManager = new SuggestionManager(this, getSupportLoaderManager(), appManager, deviceSettingManager);
+        suggestionManager = new SuggestionManager(this, getSupportLoaderManager(), managers);
         suggestionRecyclerView.setAdapter(suggestionManager);
 
         suggestionRecyclerView.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
@@ -72,10 +60,7 @@ public class RawLauncher extends AppCompatActivity {
         inputView.setOnActionDoneListener(new UserInputView.OnActionDoneListener() {
             @Override
             public boolean onActionDone(String str) {
-                Intent intent = appManager.getIntent(str);
-                if (intent == null){
-                    intent = suggestionManager.getIntent(0);
-                }
+                Intent intent = suggestionManager.getIntent(0);
                 if (intent != null){
                     startActivity(intent);
                     return true;
@@ -101,12 +86,7 @@ public class RawLauncher extends AppCompatActivity {
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
                 if (charSequence.length() > 0){
                     final String str = charSequence.toString();
-                    inputView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            suggestionManager.suggest(str);
-                        }
-                    });
+                    suggestionManager.suggest(str);
                 } else {
                     suggestionManager.clearSuggestions();
                 }
@@ -117,19 +97,15 @@ public class RawLauncher extends AppCompatActivity {
 
             }
         });
-
-        rootView.getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
-            @Override
-            public void onGlobalFocusChanged(View view, View view1) {
-                Log.d(TAG, "onGlobalFocusChanged:");
-            }
-        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         inputView.showKeyboard(this);
-        appManager.reload();
+        suggestionManager.clearSuggestions();
+        for (Manager manager : managers) {
+            manager.reload();
+        }
     }
 }

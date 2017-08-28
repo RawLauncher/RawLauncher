@@ -30,7 +30,7 @@ public abstract class Item {
         }
     };
 
-    protected final CharSequence label;
+    protected CharSequence label;
     protected final Drawable icon;
     protected final Intent intent;
 
@@ -48,7 +48,7 @@ public abstract class Item {
         return icon;
     }
 
-    public Intent getIntent(){
+    public Intent getIntent() {
         return intent;
     }
 

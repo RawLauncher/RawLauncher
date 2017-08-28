@@ -15,10 +15,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sjcqs.rawlauncher.R;
+import com.sjcqs.rawlauncher.RawLauncher;
 import com.sjcqs.rawlauncher.items.Item;
 import com.sjcqs.rawlauncher.items.apps.AppManager;
 import com.sjcqs.rawlauncher.items.device_settings.DeviceSettingManager;
+import com.sjcqs.rawlauncher.items.search.InputSearchManager;
 import com.sjcqs.rawlauncher.utils.LoaderUtils;
+import com.sjcqs.rawlauncher.utils.interfaces.Manager;
 import com.sjcqs.rawlauncher.utils.interfaces.OnItemLaunchedListener;
 import com.sjcqs.rawlauncher.utils.interfaces.Suggestor;
 
@@ -32,19 +35,19 @@ import java.util.List;
 
 public class SuggestionManager extends  RecyclerView.Adapter<SuggestionManager.ItemHolder> implements LoaderManager.LoaderCallbacks<List<Suggestion>>,Suggestor {
     private static final String TAG = SuggestionManager.class.getName();
-    private final AppManager appManager;
-    private final DeviceSettingManager deviceSettingManager;
     private final Context context;
     private final LoaderManager loaderManager;
+    private final List<Manager> managers;
+    private final InputSearchManager searchManager;
     private OnItemLaunchedListener onItemLaunchedListener;
 
     private List<Suggestion> suggestions;
 
-    public SuggestionManager(final Context context, LoaderManager loaderManager, AppManager appManager, DeviceSettingManager deviceSettingManager) {
-        this.appManager = appManager;
-        this.deviceSettingManager = deviceSettingManager;
+    public SuggestionManager(Context context, LoaderManager supportLoaderManager, List<Manager> managers) {
         this.context = context;
-        this.loaderManager = loaderManager;
+        this.loaderManager = supportLoaderManager;
+        searchManager = new InputSearchManager(context,loaderManager);
+        this.managers = managers;
         suggestions = new ArrayList<>();
     }
 
@@ -53,6 +56,7 @@ public class SuggestionManager extends  RecyclerView.Adapter<SuggestionManager.I
     public void suggest(String input) {
         Bundle bundle = new Bundle();
         bundle.putString(context.getString(R.string.arg_input),input);
+        suggestions.clear();
         loaderManager.restartLoader(LoaderUtils.SUGGESTION_LOADER,bundle,this);
     }
 
@@ -60,7 +64,7 @@ public class SuggestionManager extends  RecyclerView.Adapter<SuggestionManager.I
     public void clearSuggestions() {
         int size = suggestions.size();
         suggestions.clear();
-        loaderManager.destroyLoader(0);
+        loaderManager.destroyLoader(LoaderUtils.SUGGESTION_LOADER);
         notifyItemRangeRemoved(0,size);
     }
 
@@ -113,14 +117,13 @@ public class SuggestionManager extends  RecyclerView.Adapter<SuggestionManager.I
     @Override
     public Loader<List<Suggestion>> onCreateLoader(int id, Bundle args) {
         String str = args.getString(context.getString(R.string.arg_input));
-        return new SuggestionLoader(context, str, appManager, deviceSettingManager);
+        return new SuggestionLoader(context, str, managers,searchManager);
     }
 
     @Override
     public void onLoadFinished(Loader<List<Suggestion>> loader, List<Suggestion> data) {
         suggestions.clear();
         suggestions.addAll(data);
-        Log.d(TAG, "onLoadFinished: "+suggestions.size());
         Collections.sort(suggestions,Suggestion.SUGGESTION_COMPARATOR);
         notifyDataSetChanged();
     }

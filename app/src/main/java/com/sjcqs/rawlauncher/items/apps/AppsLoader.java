@@ -17,7 +17,7 @@ import java.util.List;
  * Created by satyan on 8/24/17.
  */
 
-public class AppsLoader extends ItemLoader<App> {
+public class AppsLoader extends ItemLoader {
     public static final int GET_NO_TAG = 0;
     private final PackageManager packageManager;
 
@@ -28,7 +28,7 @@ public class AppsLoader extends ItemLoader<App> {
 
 
     @Override
-    public List<App> loadInBackground() {
+    public List<Item> loadInBackground() {
         final Context context = getContext();
 
         List<ApplicationInfo> infos = packageManager.getInstalledApplications(GET_NO_TAG);
@@ -37,7 +37,7 @@ public class AppsLoader extends ItemLoader<App> {
             infos = new ArrayList<>();
         }
 
-        List<App> items = new ArrayList<>(infos.size());
+        List<Item> items = new ArrayList<>(infos.size());
         for (ApplicationInfo info : infos) {
             String pkg = info.packageName;
             String label;

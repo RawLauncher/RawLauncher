@@ -7,8 +7,11 @@ import android.util.Log;
 
 import com.sjcqs.rawlauncher.items.apps.AppManager;
 import com.sjcqs.rawlauncher.items.device_settings.DeviceSettingManager;
+import com.sjcqs.rawlauncher.items.search.InputSearchManager;
+import com.sjcqs.rawlauncher.utils.interfaces.Manager;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -17,26 +20,29 @@ import java.util.List;
 
 public class SuggestionLoader extends AsyncTaskLoader<List<Suggestion>> {
     private static final String TAG = SuggestionLoader.class.getName();
+    private final List<Manager> managers;
+    private final InputSearchManager searchManager;
     private String input;
-    private final AppManager appManager;
-    private final DeviceSettingManager deviceSettingManager;
     private List<Suggestion> items = null;
 
-    public SuggestionLoader(Context context, String input, AppManager appManager, DeviceSettingManager deviceSettingManager) {
+
+    public SuggestionLoader(Context context, String input, List<Manager> managers, InputSearchManager searchManager) {
         super(context);
         this.input = input;
-        this.appManager = appManager;
-        this.deviceSettingManager = deviceSettingManager;
+        this.managers = managers;
+        this.searchManager = searchManager;
     }
 
     @Override
     public List<Suggestion> loadInBackground() {
         items = new ArrayList<>();
-        // DEVICE SETTINGS
-        items.addAll(deviceSettingManager.getSuggestions(input));
-        //APPS
-        items.addAll(appManager.getSuggestions(input));
+        for (Manager manager : managers) {
+            items.addAll(manager.getSuggestions(input));
+        }
 
+        if (items.isEmpty()){
+            items.addAll(searchManager.getSuggestions(input));
+        }
         return items;
     }
 
@@ -71,8 +77,13 @@ public class SuggestionLoader extends AsyncTaskLoader<List<Suggestion>> {
             Runnable loadTask = new Runnable() { // wait for manager to load data
                 @Override
                 public void run() {
-                    if (!deviceSettingManager.isLoaded() || !appManager.isLoaded()) {
+                    if (!searchManager.isLoaded()){
                         handler.postDelayed(this,100);
+                    }
+                    for (Manager manager : managers) {
+                        if (!manager.isLoaded()){
+                            handler.postDelayed(this,100);
+                        }
                     }
                     forceLoad();
                 }
