@@ -24,7 +24,6 @@ public class DeviceSettingLoader extends ItemLoader<DeviceSetting> {
             {Settings.ACTION_AIRPLANE_MODE_SETTINGS,"Airplane Mode"},
             {Settings.ACTION_APN_SETTINGS,"APN"},
             {Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS,"Application Development"},
-            {Settings.ACTION_APPLICATION_SETTINGS,"Application"},
             {Settings.ACTION_BATTERY_SAVER_SETTINGS,"Battery Saver"},
             {Settings.ACTION_BLUETOOTH_SETTINGS,"Bluetooth"},
             {Settings.ACTION_CAPTIONING_SETTINGS,"Captioning"},

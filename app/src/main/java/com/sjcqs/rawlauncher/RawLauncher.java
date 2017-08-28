@@ -1,12 +1,19 @@
 package com.sjcqs.rawlauncher;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.sjcqs.rawlauncher.items.Item;
 import com.sjcqs.rawlauncher.items.apps.AppManager;
@@ -36,10 +43,11 @@ public class RawLauncher extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        View rootView = getLayoutInflater().inflate(R.layout.activity_raw_launcher, null);
+        final View rootView = getLayoutInflater().inflate(R.layout.activity_raw_launcher, null);
         setContentView(rootView);
         appManager = new AppManager(this, getSupportLoaderManager());
         deviceSettingManager = new DeviceSettingManager(this,getSupportLoaderManager());
+
         inputView = (UserInputView) findViewById(R.id.user_input_view);
 
         suggestionRecyclerView = (RecyclerView) findViewById(R.id.suggestions);
@@ -50,19 +58,12 @@ public class RawLauncher extends AppCompatActivity {
             @Override
             public void onChildViewAttachedToWindow(View view) {
                 if (suggestionManager.getItemCount() > 0){
-                    if (suggestionRecyclerView.getVisibility() == View.INVISIBLE){
-                        suggestionRecyclerView.setVisibility(View.VISIBLE);
-                    }
+                    suggestionRecyclerView.scrollToPosition(0);
                 }
             }
 
             @Override
             public void onChildViewDetachedFromWindow(View view) {
-                if (suggestionManager.getItemCount() == 0){
-                    if (suggestionRecyclerView.getVisibility() == View.VISIBLE){
-                        suggestionRecyclerView.setVisibility(View.INVISIBLE);
-                    }
-                }
             }
         });
 
@@ -112,6 +113,13 @@ public class RawLauncher extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
 
+            }
+        });
+
+        rootView.getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
+            @Override
+            public void onGlobalFocusChanged(View view, View view1) {
+                Log.d(TAG, "onGlobalFocusChanged:");
             }
         });
     }

@@ -120,6 +120,7 @@ public class SuggestionManager extends  RecyclerView.Adapter<SuggestionManager.I
     public void onLoadFinished(Loader<List<Suggestion>> loader, List<Suggestion> data) {
         suggestions.clear();
         suggestions.addAll(data);
+        Log.d(TAG, "onLoadFinished: "+suggestions.size());
         Collections.sort(suggestions,Suggestion.SUGGESTION_COMPARATOR);
         notifyDataSetChanged();
     }
