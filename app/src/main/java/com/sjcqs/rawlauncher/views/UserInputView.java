@@ -188,6 +188,10 @@ public class UserInputView extends RelativeLayout {
         onActionDoneListener = null;
     }
 
+    public String getInput() {
+        return userEditText.getText().toString();
+    }
+
     private enum Direction{
         NORTH,
         SOUTH,

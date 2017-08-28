@@ -25,7 +25,7 @@ import java.util.List;
  * Manage
  */
 
-public class AppManager extends Manager<App> implements Reloadable {
+public class AppManager extends Manager {
     private static final String TAG = AppManager.class.getName();
 
     public AppManager(Context context, LoaderManager loaderManager) {
@@ -34,7 +34,7 @@ public class AppManager extends Manager<App> implements Reloadable {
     }
 
     @Override
-    public Loader<List<App>> onCreateLoader(int id, Bundle args) {
+    public Loader<List<Item>> onCreateLoader(int id, Bundle args) {
         return new AppsLoader(context);
     }
 

@@ -11,6 +11,7 @@ import java.text.Normalizer;
 public final class StringUtil {
     public final static double MAX_RATE = 0.3;
     private static final String TAG = StringUtil.class.getName();
+    private static final double LONGER_PENALTY = .05d;
 
     public static double canBeSuggested(String input, String name){
         input = normalize(input); name = normalize(name);
@@ -27,6 +28,9 @@ public final class StringUtil {
                     matchDistance = 0;
                 } else if (input.length() > 3){
                     double value = levenshteinDistance(input,part2);
+                    if (string.length() > input.length()){
+                        value += LONGER_PENALTY;
+                    }
                     matchDistance = Math.min(matchDistance,value);
                 }
             }
@@ -47,6 +51,8 @@ public final class StringUtil {
     }
 
     private static double levenshteinDistance(String a, String b){
+        a = a.replaceAll("\\s","");
+        b = b.replaceAll("\\s","");
         int d[][] = new int[a.length()][b.length()];
 
         for (int i = 0; i < a.length(); i++) {

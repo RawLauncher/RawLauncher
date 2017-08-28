@@ -20,7 +20,7 @@ import java.util.List;
  * Manage device settings shortcuts
  */
 
-public class DeviceSettingManager extends Manager<DeviceSetting>{
+public class DeviceSettingManager extends Manager{
 
     public static final double PENALTY = 0.3;
 
@@ -30,12 +30,12 @@ public class DeviceSettingManager extends Manager<DeviceSetting>{
     }
 
     @Override
-    public Loader<List<DeviceSetting>> onCreateLoader(int id, Bundle args) {
+    public Loader<List<Item>> onCreateLoader(int id, Bundle args) {
         return new DeviceSettingLoader(context);
     }
 
     @Override
-    public Collection<? extends Suggestion> getSuggestions(String input) {
+    public Collection<Suggestion> getSuggestions(String input) {
         List<Suggestion> suggestions = new ArrayList<>();
         for (Item app : items) {
             String str2 = app.getLabel();

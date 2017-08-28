@@ -18,11 +18,11 @@ import java.util.List;
  * Manage apps, settings, shortcuts, etc.
  */
 
-public abstract class Manager<T extends Item> implements LoaderManager.LoaderCallbacks<List<T>>{
+public abstract class Manager implements LoaderManager.LoaderCallbacks<List<Item>>{
 
     protected final Context context;
     protected final LoaderManager loaderManager;
-    protected List<T> items;
+    protected List<Item> items;
 
     protected Manager(Context context, LoaderManager loaderManager) {
         this.context = context;
@@ -30,12 +30,12 @@ public abstract class Manager<T extends Item> implements LoaderManager.LoaderCal
     }
 
     @Override
-    public void onLoadFinished(Loader<List<T>> loader, List<T> data) {
+    public void onLoadFinished(Loader<List<Item>> loader, List<Item> data) {
         items = data;
     }
 
     @Override
-    public void onLoaderReset(Loader<List<T>> loader) {
+    public void onLoaderReset(Loader<List<Item>> loader) {
         items = null;
     }
 
@@ -54,15 +54,21 @@ public abstract class Manager<T extends Item> implements LoaderManager.LoaderCal
     }
 
 
-    public Collection<? extends Suggestion> getSuggestions(String input){
+    public Collection<Suggestion> getSuggestions(String input){
         List<Suggestion> suggestions = new ArrayList<>();
-        for (Item app : items) {
-            String str2 = app.getLabel();
-            double rate = StringUtil.canBeSuggested(input, str2);
-            if (rate < StringUtil.MAX_RATE) {
-                suggestions.add(new Suggestion(app, rate));
+        if (items != null) {
+            for (Item app : items) {
+                String str2 = app.getLabel();
+                double rate = StringUtil.canBeSuggested(input, str2);
+                if (rate < StringUtil.MAX_RATE) {
+                    suggestions.add(new Suggestion(app, rate));
+                }
             }
         }
         return suggestions;
+    }
+
+    public void reload() {
+
     }
 }
