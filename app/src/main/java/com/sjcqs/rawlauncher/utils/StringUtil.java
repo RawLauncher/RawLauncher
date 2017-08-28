@@ -9,24 +9,34 @@ import java.text.Normalizer;
  */
 
 public final class StringUtil {
-    public final static double MAX_RATE = 0.5;
+    public final static double MAX_RATE = 0.3;
     private static final String TAG = StringUtil.class.getName();
 
     public static double canBeSuggested(String input, String name){
         input = normalize(input); name = normalize(name);
         double distance = levenshteinDistance(input,name);
         boolean nameMatch = false;
+        double matchDistance = 1f;
         String strings[] = name.split("\\s");
         for (String string : strings) {
             boolean wordMatch = false;
-            for (int i = 1; i <= input.length(); i++) {
-                String part1 = input.substring(0, i);
-                if (string.length() >= part1.length()) {
-                    String part2 = string.substring(0, i);
-                    wordMatch = part1.equalsIgnoreCase(part2);
+            if (string.length() >= input.length()) {
+                String part2 = string.substring(0, input.length());
+                wordMatch = input.equalsIgnoreCase(part2);
+                if (wordMatch){
+                    matchDistance = 0;
+                } else if (input.length() > 3){
+                    double value = levenshteinDistance(input,part2);
+                    matchDistance = Math.min(matchDistance,value);
                 }
             }
             nameMatch = wordMatch || nameMatch;
+        }
+
+        distance = Math.min(matchDistance,distance);
+
+        if (matchDistance < MAX_RATE){
+            Log.d(TAG, "canBeSuggested: " + name + " " + matchDistance + " " + distance);
         }
 
         if (nameMatch || distance <= MAX_RATE){

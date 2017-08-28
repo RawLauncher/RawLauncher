@@ -1,6 +1,7 @@
 package com.sjcqs.rawlauncher.items.suggestions;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
@@ -32,22 +33,8 @@ public class SuggestionLoader extends AsyncTaskLoader<List<Suggestion>> {
     public List<Suggestion> loadInBackground() {
         items = new ArrayList<>();
         // DEVICE SETTINGS
-        while (!deviceSettingManager.isLoaded()){
-            try {
-                wait(100);
-            } catch (InterruptedException e){
-                Log.e(TAG, "loadInBackground: ", e);
-            }
-        }
         items.addAll(deviceSettingManager.getSuggestions(input));
-        // APPS
-        while (!appManager.isLoaded()){
-            try {
-                wait(100);
-            } catch (InterruptedException e) {
-                Log.e(TAG, "loadInBackground: ", e);
-            }
-        }
+        //APPS
         items.addAll(appManager.getSuggestions(input));
 
         return items;
@@ -79,8 +66,18 @@ public class SuggestionLoader extends AsyncTaskLoader<List<Suggestion>> {
             deliverResult(items);
         }
 
-        if (takeContentChanged() || items == null){
-            forceLoad();
+        if (takeContentChanged() || items == null) {
+            final Handler handler = new Handler();
+            Runnable loadTask = new Runnable() { // wait for manager to load data
+                @Override
+                public void run() {
+                    if (!deviceSettingManager.isLoaded() || !appManager.isLoaded()) {
+                        handler.postDelayed(this,100);
+                    }
+                    forceLoad();
+                }
+            };
+            handler.post(loadTask);
         }
     }
 

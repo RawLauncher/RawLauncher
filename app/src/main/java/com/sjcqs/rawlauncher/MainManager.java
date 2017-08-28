@@ -6,4 +6,5 @@ package com.sjcqs.rawlauncher;
  */
 
 public class MainManager {
+
 }
