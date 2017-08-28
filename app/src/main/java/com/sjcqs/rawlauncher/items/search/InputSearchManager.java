@@ -36,7 +36,7 @@ public class InputSearchManager extends Manager {
         for (Item item : items) {
             InputSearch inputSearch = (InputSearch) item;
             inputSearch.setInput(input);
-            Suggestion suggestion = new Suggestion(inputSearch,1d);
+            Suggestion suggestion = new Suggestion(inputSearch,inputSearch.getPriority());
             suggestions.add(suggestion);
         }
         return suggestions;
