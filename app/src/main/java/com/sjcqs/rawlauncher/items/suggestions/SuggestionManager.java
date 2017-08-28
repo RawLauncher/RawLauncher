@@ -15,10 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sjcqs.rawlauncher.R;
-import com.sjcqs.rawlauncher.RawLauncher;
 import com.sjcqs.rawlauncher.items.Item;
-import com.sjcqs.rawlauncher.items.apps.AppManager;
-import com.sjcqs.rawlauncher.items.device_settings.DeviceSettingManager;
 import com.sjcqs.rawlauncher.items.search.InputSearchManager;
 import com.sjcqs.rawlauncher.utils.LoaderUtils;
 import com.sjcqs.rawlauncher.utils.interfaces.Manager;

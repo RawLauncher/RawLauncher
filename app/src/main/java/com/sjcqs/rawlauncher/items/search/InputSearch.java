@@ -17,11 +17,13 @@ public class InputSearch extends Item {
     private final String link;
     private String input;
     private String name;
+    private double priority;
 
-    public InputSearch(String label, Drawable icon, String link) {
+    public InputSearch(String label, Drawable icon, String link, double priority) {
         super(label, icon, null);
         this.name = label;
         this.link = link;
+        this.priority = priority;
     }
 
     @Override
@@ -33,5 +35,9 @@ public class InputSearch extends Item {
     public void setInput(String input) {
         label = name + ": " + input;
         this.input = input.replaceAll("\\s","+");
+    }
+
+    public double getPriority() {
+        return priority;
     }
 }
