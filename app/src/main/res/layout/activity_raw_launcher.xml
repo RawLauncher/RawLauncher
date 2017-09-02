@@ -1,11 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/raw_launcher"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     android:padding="8dp"
     tools:context="com.sjcqs.rawlauncher.RawLauncher">
 
@@ -13,21 +13,31 @@
         android:id="@+id/suggestions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/user_input_view"
+        android:layout_above="@+id/shortcuts"
         android:foregroundGravity="bottom"
-        app:reverseLayout="true"
-        android:clipToPadding="false"
+        android:orientation="vertical"
         android:scrollbars="vertical"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        app:reverseLayout="true" />
+
+    <com.sjcqs.rawlauncher.views.ShortcutLayout
+        android:id="@+id/shortcuts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/user_input_view"
+        android:orientation="horizontal"
+        android:scrollbars="vertical"
+        android:visibility="gone"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
 
     <com.sjcqs.rawlauncher.views.UserInputView
         android:id="@+id/user_input_view"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/spacing_small"
         app:inputHint="@string/hint_launch"
         app:inputIcon="@drawable/ic_launch_black_36dp"
-        app:showClearButton="false"
-        android:layout_marginTop="@dimen/spacing_small"/>
+        app:showClearButton="false" />
 
 </RelativeLayout>

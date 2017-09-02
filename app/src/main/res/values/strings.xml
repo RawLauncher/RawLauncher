@@ -6,4 +6,8 @@
     <string name="contentDescription_button_clear">Clear the input</string>
     <string name="arg_input">Input argument</string>
     <string name="settings">Settings</string>
+    <string name="place_holder_shortcut">Shortcut</string>
+    <string name="shortcut_shared_pref">Shortucuts shared preferances</string>
+    <string name="time_shared_pref">: time</string>
+    <string name="count_shared_pref">: count</string>
 </resources>

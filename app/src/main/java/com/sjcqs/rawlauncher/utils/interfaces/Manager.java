@@ -71,4 +71,16 @@ public abstract class Manager implements LoaderManager.LoaderCallbacks<List<Item
     public void reload() {
 
     }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public List<Item> getItems(int fromIndex, int toIndex) {
+        return items.subList(fromIndex, toIndex);
+    }
+
+    public Item getItem(int index) {
+        return items.get(index);
+    }
 }

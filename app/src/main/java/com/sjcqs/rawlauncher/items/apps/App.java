@@ -18,10 +18,14 @@ public class App extends Item{
     App(ApplicationInfo info, String label, Drawable icon, Intent intent){
         super(label,icon,intent);
         this.info = info;
-
     }
 
     private String getPackageName(){
         return info.packageName;
+    }
+
+    @Override
+    public boolean isShortcutable() {
+        return true;
     }
 }

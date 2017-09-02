@@ -1,10 +1,8 @@
 package com.sjcqs.rawlauncher.items.search;
 
-import android.app.SearchManager;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.util.Log;
 
 import com.sjcqs.rawlauncher.items.Item;
 
@@ -12,7 +10,7 @@ import com.sjcqs.rawlauncher.items.Item;
  * Created by satyan on 8/28/17.
  */
 
-public class InputSearch extends Item {
+class InputSearch extends Item {
     private static final String TAG = InputSearch.class.getName();
     private final String link;
     private String input;

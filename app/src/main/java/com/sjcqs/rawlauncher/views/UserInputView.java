@@ -5,10 +5,8 @@ import android.content.res.TypedArray;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.support.v4.view.GestureDetectorCompat;
-import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -31,15 +29,11 @@ public class UserInputView extends RelativeLayout {
     private ImageButton clearButton;
     private OnActionDoneListener onActionDoneListener;
 
-    private Drawable imageDrawable;
-    private String hint;
-    private boolean requestFocus = true;
-    private boolean showClearButton = true;
     private GestureDetectorCompat detector;
+    private boolean requestFocus = true;
 
     public UserInputView(Context context) {
         super(context);
-        LayoutInflater.from(context).inflate(R.layout.view_user_input,this);
         init(context,null,0);
     }
 
@@ -54,6 +48,9 @@ public class UserInputView extends RelativeLayout {
     }
 
     private void init(final Context context, AttributeSet attrs, int defStyle) {
+        String hint = "";
+        Drawable imageDrawable = null;
+        boolean showClearButton = false;
         if (attrs != null) {
             // Load attributes
             final TypedArray a = getContext().obtainStyledAttributes(
@@ -119,7 +116,11 @@ public class UserInputView extends RelativeLayout {
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
                 if (actionId == EditorInfo.IME_ACTION_GO){
                     if (onActionDoneListener != null){
-                        return !onActionDoneListener.onActionDone(userEditText.getText().toString());
+                        boolean consumed = onActionDoneListener.onActionDone(userEditText.getText().toString());
+                        if (consumed) {
+                            clearInput();
+                        }
+                        return !consumed;
                     }
                 }
                 return false;
@@ -162,16 +163,6 @@ public class UserInputView extends RelativeLayout {
         });
     }
 
-    public void setInput(final String str) {
-        userEditText.post(new Runnable() {
-            @Override
-            public void run() {
-                userEditText.setText(str);
-                userEditText.setSelection(str.length());
-            }
-        });
-    }
-
     public void addTextChangedListener(TextWatcher watcher){
         userEditText.addTextChangedListener(watcher);
     }
@@ -190,6 +181,16 @@ public class UserInputView extends RelativeLayout {
 
     public String getInput() {
         return userEditText.getText().toString();
+    }
+
+    public void setInput(final String str) {
+        userEditText.post(new Runnable() {
+            @Override
+            public void run() {
+                userEditText.setText(str);
+                userEditText.setSelection(str.length());
+            }
+        });
     }
 
     private enum Direction{

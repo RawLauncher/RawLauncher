@@ -6,41 +6,41 @@
 
     <ImageButton
         android:id="@+id/launcher_icon"
+        style="@style/NoBackgroundImageButtonStyleTinted"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/spacing_small"
         android:layout_marginStart="@dimen/spacing_small"
-        app:srcCompat="@drawable/ic_launch_black_36dp"
         android:contentDescription="@string/contentDescription_launcher_icon"
-        style="@style/NoBackgroundImageButtonStyle"/>
+        app:srcCompat="@drawable/ic_launch_black_36dp" />
 
     <EditText
         android:id="@+id/user_input"
         android:layout_width="match_parent"
         android:layout_height="@dimen/button_height_normal"
+        android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/launcher_icon"
         android:layout_toStartOf="@+id/button_clear"
-        android:layout_centerVertical="true"
+        android:background="@null"
         android:ems="10"
         android:hint="@string/hint_launch"
-        android:textColorHint="@color/color_secondary_light"
         android:imeOptions="actionGo|flagNoFullscreen"
         android:inputType="textNoSuggestions|textShortMessage"
         android:isScrollContainer="true"
-        android:textCursorDrawable="@drawable/user_input_cursor"
-        android:background="@null"/>
+        android:textColorHint="@color/color_secondary_light"
+        android:textCursorDrawable="@drawable/user_input_cursor" />
 
     <ImageButton
         android:id="@+id/button_clear"
+        style="@style/NoBackgroundImageButtonStyleTinted"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/spacing_small"
-        android:layout_marginStart="@dimen/spacing_small"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_delete_sweep_black_36dp"
+        android:layout_marginEnd="@dimen/spacing_small"
+        android:layout_marginStart="@dimen/spacing_small"
         android:contentDescription="@string/contentDescription_button_clear"
-        style="@style/NoBackgroundImageButtonStyle"/>
+        android:src="@drawable/ic_delete_sweep_black_36dp" />
 </RelativeLayout>

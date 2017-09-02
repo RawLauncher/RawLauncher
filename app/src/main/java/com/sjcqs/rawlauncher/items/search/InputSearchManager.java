@@ -9,7 +9,7 @@ import android.util.Log;
 
 import com.sjcqs.rawlauncher.items.Item;
 import com.sjcqs.rawlauncher.items.suggestions.Suggestion;
-import com.sjcqs.rawlauncher.utils.LoaderUtils;
+import com.sjcqs.rawlauncher.utils.ManagerUtils;
 import com.sjcqs.rawlauncher.utils.interfaces.Manager;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class InputSearchManager extends Manager {
 
     public InputSearchManager(Context context, LoaderManager loaderManager) {
         super(context, loaderManager);
-        loaderManager.restartLoader(LoaderUtils.SEARCH_LOADER, null, this);
+        loaderManager.restartLoader(ManagerUtils.ID_SEARCH_LOADER, null, this);
     }
 
     @Override
@@ -49,6 +49,6 @@ public class InputSearchManager extends Manager {
 
     @Override
     public void reload() {
-        loaderManager.restartLoader(LoaderUtils.SEARCH_LOADER, null, this);
+        loaderManager.restartLoader(ManagerUtils.ID_SEARCH_LOADER, null, this);
     }
 }

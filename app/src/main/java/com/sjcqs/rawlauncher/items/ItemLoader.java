@@ -2,7 +2,6 @@ package com.sjcqs.rawlauncher.items;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
-import android.util.Log;
 
 import java.util.List;
 
@@ -54,7 +53,6 @@ public abstract class ItemLoader extends AsyncTaskLoader<List<Item>> {
 
     @Override
     protected void onReset() {
-        Log.d(TAG+"."+getClass().getName(), "onReset: ");
         onStopLoading();
         if (items != null){
             cleanUp(items);

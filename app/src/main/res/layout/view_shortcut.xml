@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@null">
+
+    <ImageButton
+        android:id="@+id/shortcut_icon"
+        style="@style/NoBackgroundImageButtonStyle"
+        android:layout_width="@dimen/image_small"
+        android:layout_height="@dimen/image_small"
+        android:layout_centerInParent="true"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/contentDescription_icon"
+        android:scaleType="centerInside"
+        android:src="@android:drawable/sym_def_app_icon" />
+
+    <TextView
+        android:id="@+id/shortcut_label"
+        android:layout_width="@dimen/image_large"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/shortcut_icon"
+        android:ellipsize="end"
+        android:text="@string/place_holder_shortcut"
+        android:textAlignment="center"
+        android:visibility="gone" />
+</RelativeLayout>

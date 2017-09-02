@@ -9,7 +9,7 @@ import com.sjcqs.rawlauncher.items.Item;
  * Created by satyan on 8/27/17.
  */
 
-public class DeviceSetting extends Item {
+class DeviceSetting extends Item {
 
     private final String action;
 
