@@ -37,9 +37,6 @@ class SuggestionLoader extends AsyncTaskLoader<List<Suggestion>> {
             items.addAll(manager.getSuggestions(input));
         }
 
-        if (items.isEmpty()) {
-            items.addAll(searchManager.getSuggestions(input));
-        }
         return items;
     }
 
@@ -53,13 +50,18 @@ class SuggestionLoader extends AsyncTaskLoader<List<Suggestion>> {
 
         this.items = data;
 
+        if (items != null) {
+            items.addAll(searchManager.getSuggestions(input));
+        }
+
         if (isStarted()) {
-            super.deliverResult(data);
+            super.deliverResult(items);
         }
 
         if (data != null) {
             cleanUp(data);
         }
+
 
     }
 
