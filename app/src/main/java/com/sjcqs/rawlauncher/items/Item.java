@@ -3,6 +3,8 @@ package com.sjcqs.rawlauncher.items;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 
+import com.sjcqs.rawlauncher.utils.interfaces.Shortcutable;
+
 import java.text.Collator;
 import java.util.Comparator;
 import java.util.Locale;
@@ -11,7 +13,7 @@ import java.util.Locale;
  * Created by satyan on 8/24/17.
  */
 
-public abstract class Item {
+public abstract class Item implements Shortcutable {
 
     public static final Comparator<? super Item> ALPHA_COMPARATOR = new Comparator<Item>() {
         private final Collator COLLATOR = Collator.getInstance(Locale.getDefault());
@@ -29,10 +31,9 @@ public abstract class Item {
             return -(COLLATOR.compare(app1.getLabel(), app2.getLabel()));
         }
     };
-
-    protected CharSequence label;
     protected final Drawable icon;
     protected final Intent intent;
+    protected CharSequence label;
 
     protected Item(String label, Drawable drawable, Intent intent){
         this.label = label;
@@ -59,5 +60,10 @@ public abstract class Item {
     @Override
     public String toString() {
         return label + ": " + icon.toString();
+    }
+
+    @Override
+    public boolean isShortcutable() {
+        return false;
     }
 }

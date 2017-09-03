@@ -15,9 +15,9 @@ import java.util.List;
 
 /**
  * Created by satyan on 8/24/17.
+ * Load application on the device
  */
-
-public class AppsLoader extends ItemLoader {
+class AppsLoader extends ItemLoader {
     public static final int GET_NO_TAG = 0;
     private final PackageManager packageManager;
 

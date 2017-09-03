@@ -11,7 +11,7 @@ import java.util.Locale;
  */
 
 public class Suggestion extends Item{
-    public static final Comparator<? super Suggestion> SUGGESTION_COMPARATOR =
+    static final Comparator<? super Suggestion> SUGGESTION_COMPARATOR =
             new Comparator<Suggestion>() {
                 private final Collator COLLATOR = Collator.getInstance(Locale.getDefault());
 
@@ -23,13 +23,14 @@ public class Suggestion extends Item{
                             rateCmp : (COLLATOR.compare(item1.getLabel(), item2.getLabel())));
                 }
             };
-
+    private final Item item;
     private final double rate;
 
 
     public Suggestion(Item item, double rate) {
         super(item.getLabel(),item.getIcon(), item.getIntent());
         this.rate = rate;
+        this.item = item;
     }
 
     public double getRate() {
@@ -37,6 +38,6 @@ public class Suggestion extends Item{
     }
 
     public Item getItem() {
-        return this;
+        return item;
     }
 }

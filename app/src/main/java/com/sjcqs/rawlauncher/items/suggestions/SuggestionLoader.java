@@ -3,10 +3,7 @@ package com.sjcqs.rawlauncher.items.suggestions;
 import android.content.Context;
 import android.os.Handler;
 import android.support.v4.content.AsyncTaskLoader;
-import android.util.Log;
 
-import com.sjcqs.rawlauncher.items.apps.AppManager;
-import com.sjcqs.rawlauncher.items.device_settings.DeviceSettingManager;
 import com.sjcqs.rawlauncher.items.search.InputSearchManager;
 import com.sjcqs.rawlauncher.utils.interfaces.Manager;
 
@@ -16,17 +13,17 @@ import java.util.List;
 
 /**
  * Created by satyan on 8/27/17.
+ * Load suggestions using user input and managers
  */
-
-public class SuggestionLoader extends AsyncTaskLoader<List<Suggestion>> {
+class SuggestionLoader extends AsyncTaskLoader<List<Suggestion>> {
     private static final String TAG = SuggestionLoader.class.getName();
-    private final List<Manager> managers;
+    private final Collection<Manager> managers;
     private final InputSearchManager searchManager;
     private String input;
     private List<Suggestion> items = null;
 
 
-    public SuggestionLoader(Context context, String input, List<Manager> managers, InputSearchManager searchManager) {
+    public SuggestionLoader(Context context, String input, Collection<Manager> managers, InputSearchManager searchManager) {
         super(context);
         this.input = input;
         this.managers = managers;
@@ -40,7 +37,7 @@ public class SuggestionLoader extends AsyncTaskLoader<List<Suggestion>> {
             items.addAll(manager.getSuggestions(input));
         }
 
-        if (items.isEmpty()){
+        if (items.isEmpty()) {
             items.addAll(searchManager.getSuggestions(input));
         }
         return items;
@@ -48,19 +45,19 @@ public class SuggestionLoader extends AsyncTaskLoader<List<Suggestion>> {
 
     @Override
     public void deliverResult(List<Suggestion> data) {
-        if (isReset()){
-            if (data != null){
+        if (isReset()) {
+            if (data != null) {
                 cleanUp(data);
             }
         }
 
         this.items = data;
 
-        if (isStarted()){
+        if (isStarted()) {
             super.deliverResult(data);
         }
 
-        if (data != null){
+        if (data != null) {
             cleanUp(data);
         }
 
@@ -68,7 +65,7 @@ public class SuggestionLoader extends AsyncTaskLoader<List<Suggestion>> {
 
     @Override
     protected void onStartLoading() {
-        if (items != null){
+        if (items != null) {
             deliverResult(items);
         }
 
@@ -77,12 +74,12 @@ public class SuggestionLoader extends AsyncTaskLoader<List<Suggestion>> {
             Runnable loadTask = new Runnable() { // wait for manager to load data
                 @Override
                 public void run() {
-                    if (!searchManager.isLoaded()){
-                        handler.postDelayed(this,100);
+                    if (!searchManager.isLoaded()) {
+                        handler.postDelayed(this, 100);
                     }
                     for (Manager manager : managers) {
-                        if (!manager.isLoaded()){
-                            handler.postDelayed(this,100);
+                        if (!manager.isLoaded()) {
+                            handler.postDelayed(this, 100);
                         }
                     }
                     forceLoad();
@@ -95,7 +92,7 @@ public class SuggestionLoader extends AsyncTaskLoader<List<Suggestion>> {
     @Override
     protected void onReset() {
         onStopLoading();
-        if (items != null){
+        if (items != null) {
             cleanUp(items);
             items = null;
         }
@@ -112,8 +109,7 @@ public class SuggestionLoader extends AsyncTaskLoader<List<Suggestion>> {
         cancelLoad();
     }
 
-    private void cleanUp(List<Suggestion> apps){
+    private void cleanUp(List<Suggestion> apps) {
         // clean up used resources
     }
-
 }

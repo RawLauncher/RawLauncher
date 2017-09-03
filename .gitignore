@@ -4,6 +4,9 @@
 # Files for the ART/Dalvik VM
 *.dex
 
+# Keys
+*.jks
+
 # Java class files
 *.class
 
@@ -28,6 +31,9 @@ local.properties
 
 # Android Studio captures folder
 captures/
+
+# Resources
+resources/
 
 # Intellij
 *.iml

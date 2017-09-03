@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.sjcqs.rawlauncher">
+
+
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
 
     <application
         android:allowBackup="true"
@@ -11,15 +17,15 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".RawLauncher"
-            android:configChanges="keyboardHidden|orientation|screenSize|keyboard|navigation"
-
-            android:launchMode="singleTask"
             android:clearTaskOnLaunch="true"
-            android:stateNotNeeded="true"
-            android:resumeWhilePausing="true"
-            android:taskAffinity=""
+
+            android:configChanges="keyboardHidden|orientation|screenSize|keyboard|navigation"
             android:enabled="true"
             android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:resumeWhilePausing="true"
+            android:stateNotNeeded="true"
+            android:taskAffinity=""
 
             android:windowSoftInputMode="stateAlwaysVisible|adjustResize">
             <intent-filter>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ShortcutView">
+        <attr name="shortcutLabel" format="string" />
+        <attr name="shortcutIcon" format="color|reference" />
+    </declare-styleable>
+</resources>

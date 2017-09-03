@@ -7,7 +7,7 @@ import android.support.v4.content.Loader;
 
 import com.sjcqs.rawlauncher.items.Item;
 import com.sjcqs.rawlauncher.items.suggestions.Suggestion;
-import com.sjcqs.rawlauncher.utils.LoaderUtils;
+import com.sjcqs.rawlauncher.utils.ManagerUtils;
 import com.sjcqs.rawlauncher.utils.StringUtil;
 import com.sjcqs.rawlauncher.utils.interfaces.Manager;
 
@@ -26,7 +26,7 @@ public class DeviceSettingManager extends Manager{
 
     public DeviceSettingManager(Context context, LoaderManager loaderManager) {
         super(context, loaderManager);
-        loaderManager.initLoader(LoaderUtils.DEVICE_SETTINGS_LOADER,null,this);
+        loaderManager.initLoader(ManagerUtils.ID_DEVICE_SETTINGS_LOADER, null, this);
     }
 
     @Override

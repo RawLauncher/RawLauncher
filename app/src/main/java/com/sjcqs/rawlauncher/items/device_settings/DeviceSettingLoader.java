@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.provider.Settings;
 import android.support.v4.content.res.ResourcesCompat;
-import android.util.Log;
 
 import com.sjcqs.rawlauncher.R;
 import com.sjcqs.rawlauncher.items.Item;
@@ -18,7 +17,7 @@ import java.util.List;
  * Created by satyan on 8/27/17.
  */
 
-public class DeviceSettingLoader extends ItemLoader {
+class DeviceSettingLoader extends ItemLoader {
     private final static String[][] SETTINGS_ACTION = {
             {Settings.ACTION_ACCESSIBILITY_SETTINGS,"Accessibility"},
             {Settings.ACTION_ADD_ACCOUNT,"Add Account"},
@@ -63,7 +62,7 @@ public class DeviceSettingLoader extends ItemLoader {
         if (icon != null){
             icon.setTint(ResourcesCompat.getColor(context.getResources(),R.color.color_secondary,null));
         }
-        
+
         for (String[] action : SETTINGS_ACTION) {
             Intent intent = new Intent(action[0]);
             DeviceSetting setting = new DeviceSetting(action[0],action[1],icon, intent);
