@@ -135,10 +135,11 @@ public class SuggestionManager extends  RecyclerView.Adapter<SuggestionManager.I
 
     public void uninstallApp(Suggestion suggestion) {
         Item item = suggestion.getItem();
+        int pos = suggestions.indexOf(suggestion);
         Intent intent = item.getUninstallIntent();
         context.startActivity(intent);
         suggestions.remove(suggestion);
-        notifyDataSetChanged();
+        notifyItemRemoved(pos);
     }
 
     public void hideItem(int position) {
