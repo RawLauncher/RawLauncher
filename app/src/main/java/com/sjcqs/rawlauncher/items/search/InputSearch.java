@@ -43,7 +43,8 @@ class InputSearch extends Item {
         return priority;
     }
 
-    public String getName() {
+    @Override
+    public String getDiscriminator() {
         return name;
     }
 }

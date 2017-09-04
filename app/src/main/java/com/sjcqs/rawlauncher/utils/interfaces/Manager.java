@@ -19,6 +19,7 @@ import java.util.List;
  */
 
 public abstract class Manager implements LoaderManager.LoaderCallbacks<List<Item>>{
+    private static final String TAG = Manager.class.getName();
 
     protected final Context context;
     protected final LoaderManager loaderManager;
@@ -60,6 +61,7 @@ public abstract class Manager implements LoaderManager.LoaderCallbacks<List<Item
             for (Item app : items) {
                 String str2 = app.getLabel();
                 double rate = StringUtil.canBeSuggested(input, str2);
+
                 if (rate < StringUtil.MAX_RATE) {
                     suggestions.add(new Suggestion(app, rate));
                 }

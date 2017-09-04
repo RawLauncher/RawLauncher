@@ -63,7 +63,19 @@ public abstract class Item implements Shortcutable {
     }
 
     @Override
-    public boolean isShortcutable() {
+    public boolean canBeAShortcut() {
         return false;
+    }
+
+    public String getDiscriminator() {
+        return getLabel();
+    }
+
+    public boolean canBeUninstalled() {
+        return false;
+    }
+
+    public Intent getUninstallIntent() {
+        return null;
     }
 }

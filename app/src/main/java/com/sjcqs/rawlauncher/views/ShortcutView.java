@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.sjcqs.rawlauncher.R;
+import com.sjcqs.rawlauncher.utils.interfaces.OnActionListener;
 
 /**
  * Created by satyan on 9/1/17.
@@ -108,12 +109,6 @@ public class ShortcutView extends RelativeLayout {
 
     public void setOnActionListener(OnActionListener onActionListener) {
         this.onActionListener = onActionListener;
-    }
-
-    interface OnActionListener {
-        boolean onPressed();
-
-        void onLongPressed();
     }
 
     private class InputGestureListener implements GestureDetector.OnGestureListener {

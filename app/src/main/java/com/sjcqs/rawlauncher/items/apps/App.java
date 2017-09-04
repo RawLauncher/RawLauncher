@@ -3,6 +3,7 @@ package com.sjcqs.rawlauncher.items.apps;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 
 import com.sjcqs.rawlauncher.items.Item;
 
@@ -25,7 +26,18 @@ public class App extends Item{
     }
 
     @Override
-    public boolean isShortcutable() {
+    public boolean canBeAShortcut() {
         return true;
+    }
+
+    @Override
+    public boolean canBeUninstalled() {
+        return true;
+    }
+
+    @Override
+    public Intent getUninstallIntent() {
+        return new Intent(Intent.ACTION_DELETE, Uri.fromParts("package",
+                info.packageName, null));
     }
 }

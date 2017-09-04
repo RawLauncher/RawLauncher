@@ -6,6 +6,8 @@
     <color name="color_secondary_light">#63a4ff</color>
     <color name="color_secondary">#1976d2</color>
     <color name="color_secondary_dark">#004ba0</color>
+    <color name="color_warning">#F57C00</color>
+    <color name="color_danger">#d32f2f</color>
     <color name="color_white">#ffffff</color>
     <color name="color_black">#000000</color>
     <color name="color_transparent">#00000000</color>

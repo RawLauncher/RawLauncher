@@ -75,19 +75,18 @@ public class ShortcutManager {
                     sortedApps.clear();
                     List<Item> apps = appManager.getItems();
                     for (Item app : apps) {
-                        SharedPreferences sharedPreferences = PreferenceManager
+                        SharedPreferences pref = PreferenceManager
                                 .getDefaultSharedPreferences(context);
-                        String label = app.getLabel();
-                        long time = sharedPreferences.getLong(
-                                label + context.getString(R.string.time_shared_pref),
+                        String label = app.getDiscriminator();
+                        long time = pref.getLong(
+                                context.getString(R.string.time_shared_pref, label),
                                 0);
-                        long count = sharedPreferences.getLong(
-                                label + context.getString(R.string.count_shared_pref),
+                        long count = pref.getLong(
+                                context.getString(R.string.count_shared_pref, label),
                                 0);
-
-                        //Log.d(TAG, label + ": "+ time + "; " + count);
 
                         AppStats stats = new AppStats((App) app, count, time);
+
                         if (!sortedApps.contains(stats)) {
                             sortedApps.add(stats);
                         }

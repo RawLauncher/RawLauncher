@@ -7,7 +7,11 @@
     <string name="arg_input">Input argument</string>
     <string name="settings">Settings</string>
     <string name="place_holder_shortcut">Shortcut</string>
-    <string name="shortcut_shared_pref">Shortucuts shared preferances</string>
-    <string name="time_shared_pref">: time</string>
-    <string name="count_shared_pref">: count</string>
+    <string name="shortcut_shared_pref">Shortcuts shared preferences</string>
+    <string name="time_shared_pref">%1$s : time</string>
+    <string name="count_shared_pref">%1$s : count</string>
+    <string name="blacklist_shared_pref">Blacklist string set</string>
+    <string name="hide_suggestion_content_desc">Hide suggestion</string>
+    <string name="uninstall_suggestion_content_desc">Remove suggestion</string>
+    <string name="hide_shared_pref">%1$s : hidden</string>
 </resources>

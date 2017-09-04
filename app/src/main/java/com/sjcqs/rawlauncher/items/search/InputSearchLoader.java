@@ -17,9 +17,10 @@ import java.util.List;
  */
 
 class InputSearchLoader extends ItemLoader {
-    private static final double LOW_PRIORITY = 1.3;
-    private static final double MEDIUM_PRIORITY = 1.2;
-    private static final double HIGH_PRIORITY = 1.1;
+    public static final double BASE_PRIORITY = 10;
+    private static final double LOW_PRIORITY = 15;
+    private static final double MEDIUM_PRIORITY = 16;
+    private static final double HIGH_PRIORITY = 17;
     private static final SearchData[] SEARCHES_DATA = {
             new SearchData("Play Store", "market://search?q=", null, R.drawable.ic_google_play_black_24dp, HIGH_PRIORITY),
             new SearchData("Google", "http://www.google.com/#q=", null, R.drawable.ic_google_black_24dp, HIGH_PRIORITY),
