@@ -2,8 +2,10 @@ package com.sjcqs.rawlauncher.items.suggestions;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.RecyclerView;
@@ -41,6 +43,7 @@ public class SuggestionManager extends  RecyclerView.Adapter<SuggestionManager.I
     private OnItemLaunchedListener onItemLaunchedListener;
 
     private List<Suggestion> suggestions;
+    private boolean idle = true;
 
     public SuggestionManager(Context context, LoaderManager supportLoaderManager, Collection<Manager> managers) {
         this.context = context;
@@ -61,10 +64,9 @@ public class SuggestionManager extends  RecyclerView.Adapter<SuggestionManager.I
 
     @Override
     public void clearSuggestions() {
-        int size = suggestions.size();
         suggestions.clear();
         loaderManager.destroyLoader(ManagerUtils.ID_SUGGESTION_LOADER);
-        notifyItemRangeRemoved(0,size);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -74,20 +76,30 @@ public class SuggestionManager extends  RecyclerView.Adapter<SuggestionManager.I
     }
 
     @Override
-    public void onBindViewHolder(ItemHolder holder, int position) {
+    public void onBindViewHolder(final ItemHolder holder, int position) {
         final Suggestion item = suggestions.get(position);
         if (item != null) {
             holder.setIcon(item.getIcon());
             holder.setLabel(item.getLabel());
-            holder.setOnClickListener(new View.OnClickListener() {
-
+            holder.setOnActionListener(new OnActionListener() {
                 @Override
-                public void onClick(View view) {
+                public void onClicked() {
                     if (onItemLaunchedListener != null) {
                         onItemLaunchedListener.onItemLaunched(item.getItem());
                     }
                     context.startActivity(item.getIntent());
                 }
+
+                @Override
+                public boolean onHide() {
+                    return false;
+                }
+
+                @Override
+                public boolean onRemove() {
+                    return false;
+                }
+
             });
         }
     }
@@ -115,6 +127,31 @@ public class SuggestionManager extends  RecyclerView.Adapter<SuggestionManager.I
         }
     }
 
+    public void hideItem(Suggestion item) {
+        suggestions.remove(item);
+        notifyDataSetChanged();
+    }
+
+    public void uninstallApp(Suggestion suggestion) {
+        Item item = suggestion.getItem();
+        Intent intent = item.getUninstallIntent();
+        context.startActivity(intent);
+        suggestions.remove(suggestion);
+        notifyDataSetChanged();
+    }
+
+    public void hideItem(int position) {
+        hideItem(suggestions.get(position));
+    }
+
+    public Item getItem(int i) {
+        return suggestions.get(i).getItem();
+    }
+
+    public Suggestion getSuggestion(int position) {
+        return suggestions.get(position);
+    }
+
     @Override
     public Loader<List<Suggestion>> onCreateLoader(int id, Bundle args) {
         String str = args.getString(context.getString(R.string.arg_input));
@@ -124,28 +161,52 @@ public class SuggestionManager extends  RecyclerView.Adapter<SuggestionManager.I
     @Override
     public void onLoadFinished(Loader<List<Suggestion>> loader, List<Suggestion> data) {
         suggestions.clear();
-        suggestions.addAll(data);
-        Collections.sort(suggestions,Suggestion.SUGGESTION_COMPARATOR);
+
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        for (Suggestion suggestion : data) {
+            boolean found =
+                    pref.getBoolean(
+                            context.getString(
+                                    R.string.hide_shared_pref,
+                                    suggestion.getDiscriminator()
+                            ),
+                            false
+                    );
+            if (!found) {
+                suggestions.add(suggestion);
+            }
+        }
+        Collections.sort(suggestions, Suggestion.SUGGESTION_COMPARATOR);
         notifyDataSetChanged();
     }
 
     @Override
     public void onLoaderReset(Loader<List<Suggestion>> loader) {
-        //suggestions.clear();
+
     }
 
-    public Item getItem(int i) {
-        return suggestions.get(i).getItem();
+    public boolean isIdle() {
+        return idle;
     }
 
-    class ItemHolder extends RecyclerView.ViewHolder {
-        View view;
+
+    interface OnActionListener {
+        void onClicked();
+
+        boolean onHide();
+
+        boolean onRemove();
+    }
+
+    public class ItemHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener, View.OnLongClickListener {
         private TextView labelView;
         private ImageView iconView;
+        private OnActionListener onActionListener;
+        private boolean enabled = true;
 
         ItemHolder(View itemView) {
             super(itemView);
-            view = itemView;
             labelView = itemView.findViewById(R.id.label);
             iconView = itemView.findViewById(R.id.item_icon);
         }
@@ -158,8 +219,26 @@ public class SuggestionManager extends  RecyclerView.Adapter<SuggestionManager.I
             labelView.setText(text);
         }
 
-        void setOnClickListener(View.OnClickListener onClickListener) {
-            itemView.setOnClickListener(onClickListener);
+        void setOnActionListener(OnActionListener listener) {
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+            this.onActionListener = listener;
+        }
+
+        public void clearActionListener() {
+            this.onActionListener = null;
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (enabled) {
+                onActionListener.onClicked();
+            }
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            return false;
         }
     }
 }

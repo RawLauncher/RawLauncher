@@ -2,7 +2,6 @@ package com.sjcqs.rawlauncher.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.support.v4.view.GestureDetectorCompat;
 import android.text.TextWatcher;
@@ -20,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.sjcqs.rawlauncher.R;
+import com.sjcqs.rawlauncher.utils.MotionEventUtils;
 
 public class UserInputView extends RelativeLayout {
 
@@ -193,14 +193,6 @@ public class UserInputView extends RelativeLayout {
         });
     }
 
-    private enum Direction{
-        NORTH,
-        SOUTH,
-        EST,
-        WEST,
-        UNKNOWN
-    }
-
     public interface OnActionDoneListener{
         /**
          * Call when the action done button is pressed
@@ -211,7 +203,6 @@ public class UserInputView extends RelativeLayout {
     }
 
     private class InputGestureListener extends GestureDetector.SimpleOnGestureListener {
-        private final int DISTANCE_THRESHOLD = 100;
         @Override
         public boolean onDown(MotionEvent motionEvent) {
             return false;
@@ -219,9 +210,7 @@ public class UserInputView extends RelativeLayout {
 
         @Override
         public boolean onFling(MotionEvent fromEvent, MotionEvent toEvent, float v, float v1) {
-            Point p0 = new Point((int)fromEvent.getX(),(int)fromEvent.getY());
-            Point p1 = new Point((int)toEvent.getX(),(int)toEvent.getY());
-            Direction direction = getDirection(p0,p1);
+            MotionEventUtils.Direction direction = MotionEventUtils.getDirection(fromEvent, toEvent);
             switch (direction){
                 case NORTH:
                     break;
@@ -236,32 +225,6 @@ public class UserInputView extends RelativeLayout {
                     return false;
             }
             return false;
-        }
-
-        private Direction getDirection(Point from, Point to){
-            Point d = new Point(from.x - to.x,from.y - to.y);
-            boolean swipeX = false, swipeY = false;
-
-            if (Math.abs(d.x) > DISTANCE_THRESHOLD){
-                swipeX = true;
-            }
-            if (Math.abs(d.y) > DISTANCE_THRESHOLD){
-                swipeY = true;
-            }
-
-            if (swipeX && !swipeY){
-                if (d.x > 0){
-                    return Direction.WEST;
-                } else return Direction.EST;
-            } else if(!swipeX){
-                if (d.y > 0){
-                    return Direction.NORTH;
-                } else {
-                    return Direction.SOUTH;
-                }
-            }
-
-            return Direction.UNKNOWN;
         }
     }
 }

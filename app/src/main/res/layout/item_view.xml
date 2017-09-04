@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@null"
     android:foreground="?android:attr/selectableItemBackground"
+    android:minHeight="@dimen/image_normal"
     android:orientation="horizontal"
     android:padding="@dimen/spacing_small"
     android:paddingEnd="@dimen/spacing_normal"
@@ -12,7 +13,8 @@
         android:id="@+id/item_icon"
         android:layout_width="@dimen/image_tiny"
         android:layout_height="@dimen/image_tiny"
-        android:layout_gravity="center_vertical"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/spacing_normal"
         android:contentDescription="@string/contentDescription_icon"
         android:src="@android:drawable/sym_def_app_icon" />
@@ -21,7 +23,9 @@
         style="@style/label_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/item_icon"
         android:ellipsize="end"
         android:lines="1" />
-</LinearLayout>
+</RelativeLayout>

@@ -40,4 +40,9 @@ public class Suggestion extends Item{
     public Item getItem() {
         return item;
     }
+
+    @Override
+    public String getDiscriminator() {
+        return item.getDiscriminator();
+    }
 }

@@ -5,5 +5,5 @@ package com.sjcqs.rawlauncher.utils.interfaces;
  */
 
 public interface Shortcutable {
-    boolean isShortcutable();
+    boolean canBeAShortcut();
 }

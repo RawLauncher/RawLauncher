@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 
 import com.sjcqs.rawlauncher.R;
+import com.sjcqs.rawlauncher.utils.interfaces.OnActionListener;
 
 /**
  * Created by satyan on 9/1/17.
@@ -59,7 +60,7 @@ public class ShortcutLayout extends RelativeLayout {
         for (int i = 0; i < shortcutViews.length; i++) {
             shortcutPressable[i] = true;
             final int id = i;
-            shortcutViews[i].setOnActionListener(new ShortcutView.OnActionListener() {
+            shortcutViews[i].setOnActionListener(new OnActionListener() {
                 @Override
                 public boolean onPressed() {
                     return shortcutPressable[id]

@@ -1,7 +1,5 @@
 package com.sjcqs.rawlauncher.utils;
 
-import android.util.Log;
-
 import java.text.Normalizer;
 
 /**
@@ -16,36 +14,24 @@ public final class StringUtil {
     public static double canBeSuggested(String input, String name){
         input = normalize(input); name = normalize(name);
         double distance = levenshteinDistance(input,name);
-        boolean nameMatch = false;
-        double matchDistance = 1f;
-        String strings[] = name.split("\\s");
-        for (String string : strings) {
-            boolean wordMatch = false;
+        double matchDistance = Double.MAX_VALUE;
+        String nameSubStrings[] = name.split("\\s");
+        for (String string : nameSubStrings) {
             if (string.length() >= input.length()) {
                 String part2 = string.substring(0, input.length());
-                wordMatch = input.equalsIgnoreCase(part2);
-                if (wordMatch){
-                    matchDistance = 0;
-                } else if (input.length() > 3){
-                    double value = levenshteinDistance(input,part2);
-                    if (string.length() > input.length()){
+                if (input.equalsIgnoreCase(part2)) {
+                    return input.length() > name.length() ? LONGER_PENALTY : 0;
+                } else if (input.length() > 3) {
+                    double value = levenshteinDistance(input, part2);
+                    if (string.length() > input.length()) {
                         value += LONGER_PENALTY;
                     }
-                    matchDistance = Math.min(matchDistance,value);
+                    matchDistance = Math.min(matchDistance, value);
                 }
             }
-            nameMatch = wordMatch || nameMatch;
         }
 
         distance = Math.min(matchDistance,distance);
-
-        if (matchDistance < MAX_RATE){
-            Log.d(TAG, "canBeSuggested: " + name + " " + matchDistance + " " + distance);
-        }
-
-        if (nameMatch || distance <= MAX_RATE){
-            distance = nameMatch ? 0 : distance;
-        }
 
         return distance;
     }
