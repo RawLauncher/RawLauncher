@@ -161,7 +161,6 @@ public class SuggestionManager extends  RecyclerView.Adapter<SuggestionManager.I
     @Override
     public void onLoadFinished(Loader<List<Suggestion>> loader, List<Suggestion> data) {
         suggestions.clear();
-
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         for (Suggestion suggestion : data) {
             boolean found =
