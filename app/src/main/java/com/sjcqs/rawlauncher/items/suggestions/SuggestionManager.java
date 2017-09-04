@@ -128,8 +128,9 @@ public class SuggestionManager extends  RecyclerView.Adapter<SuggestionManager.I
     }
 
     public void hideItem(Suggestion item) {
+        int pos = suggestions.indexOf(item);
+        notifyItemRemoved(pos);
         suggestions.remove(item);
-        notifyDataSetChanged();
     }
 
     public void uninstallApp(Suggestion suggestion) {
