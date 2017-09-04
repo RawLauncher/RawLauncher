@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 
 import com.sjcqs.rawlauncher.items.Item;
@@ -106,14 +107,14 @@ public class RawLauncher extends AppCompatActivity implements OnItemLaunchedList
             @Override
             public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                 int position = viewHolder.getAdapterPosition();
-                Item item = suggestionManager.getItem(position);
-                View itemView = viewHolder.itemView;
-                // not sure why, but this method get's called for viewholder that are already swiped away
-                if (viewHolder.getAdapterPosition() == -1) {
+
+                if (position == -1) {
                     // not interested in those
                     return;
                 }
 
+                View itemView = viewHolder.itemView;
+                Item item = suggestionManager.getItem(position);
                 if (!initiated) {
                     init();
                 }
@@ -207,6 +208,7 @@ public class RawLauncher extends AppCompatActivity implements OnItemLaunchedList
             @Override
             public void onChildViewAttachedToWindow(View view) {
                 if (suggestionManager.getItemCount() > 0) {
+                    Log.d(TAG, "onChildViewAttachedToWindow");
                     suggestionRecyclerView.scrollToPosition(0);
                 }
             }
