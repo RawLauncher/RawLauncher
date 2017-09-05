@@ -28,7 +28,7 @@
         android:layout_above="@+id/user_input_view"
         android:orientation="horizontal"
         android:scrollbars="vertical"
-        android:visibility="gone"
+        android:visibility="invisible"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
 
     <com.sjcqs.rawlauncher.views.UserInputView

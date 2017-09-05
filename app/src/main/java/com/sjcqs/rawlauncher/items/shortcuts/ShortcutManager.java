@@ -1,22 +1,20 @@
 package com.sjcqs.rawlauncher.items.shortcuts;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Handler;
-import android.preference.PreferenceManager;
+import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
 
-import com.sjcqs.rawlauncher.R;
 import com.sjcqs.rawlauncher.items.Item;
-import com.sjcqs.rawlauncher.items.apps.App;
 import com.sjcqs.rawlauncher.items.apps.AppManager;
+import com.sjcqs.rawlauncher.utils.ManagerUtils;
+import com.sjcqs.rawlauncher.utils.interfaces.Manager;
 import com.sjcqs.rawlauncher.utils.interfaces.OnItemLaunchedListener;
+import com.sjcqs.rawlauncher.utils.interfaces.Reloadable;
 import com.sjcqs.rawlauncher.views.ShortcutLayout;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -24,18 +22,19 @@ import java.util.List;
  * Manage app shortcuts
  */
 
-public class ShortcutManager {
+public class ShortcutManager extends Manager implements Reloadable {
     private static final String TAG = ShortcutManager.class.getName();
     private final ShortcutLayout shortcutLayout;
-    private final Context context;
     private final AppManager appManager;
-    private List<App> shortcuts = new ArrayList<>(ShortcutLayout.MAX_SHORTCUT_NUMBER);
-    private List<AppStats> sortedApps = new ArrayList<>();
     private OnItemLaunchedListener onItemLaunchedListener;
 
-    public ShortcutManager(final Context context, final AppManager appManager, final ShortcutLayout shortcutLayout) {
+    public ShortcutManager(
+            final Context context, LoaderManager loaderManager,
+            final AppManager appManager, final ShortcutLayout shortcutLayout
+    ) {
+        super(context, loaderManager);
+
         this.shortcutLayout = shortcutLayout;
-        this.context = context;
         this.appManager = appManager;
 
         shortcutLayout.setOnShortcutActionListener(new ShortcutLayout.OnShortcutActionListener() {
@@ -48,7 +47,7 @@ public class ShortcutManager {
             @Override
             public boolean onPressed(int id) {
                 try {
-                    App app = shortcuts.get(id);
+                    Item app = items.get(id);
                     if (onItemLaunchedListener != null) {
                         onItemLaunchedListener.onItemLaunched(app);
                     }
@@ -60,51 +59,11 @@ public class ShortcutManager {
                 return false;
             }
         });
-        update();
     }
 
-    public void update() {
-        final Handler h = new Handler();
-        final Runnable task = new Runnable() {
-            @Override
-            public void run() {
-                if (!appManager.isLoaded()) {
-                    h.post(this);
-                } else {
-                    sortedApps.clear();
-                    List<Item> apps = appManager.getItems();
-                    for (Item app : apps) {
-                        SharedPreferences pref = PreferenceManager
-                                .getDefaultSharedPreferences(context);
-                        String label = app.getDiscriminator();
-                        long time = pref.getLong(
-                                context.getString(R.string.time_shared_pref, label),
-                                0);
-                        long count = pref.getLong(
-                                context.getString(R.string.count_shared_pref, label),
-                                0);
-
-                        AppStats stats = new AppStats((App) app, count, time);
-
-                        if (!sortedApps.contains(stats)) {
-                            sortedApps.add(stats);
-                        }
-                    }
-
-                    Collections.sort(sortedApps, AppStats.COMPARATOR);
-
-                    shortcuts.clear();
-                    for (int i = 0; i < ShortcutLayout.MAX_SHORTCUT_NUMBER; i++) {
-                        App app = sortedApps.get(i).app;
-                        Log.d(TAG, app.getLabel() + ": " + i + " " + sortedApps.get(i).count + " " + sortedApps.get(i).time);
-                        shortcuts.add(app);
-                        shortcutLayout.setIcon(i, app.getIcon());
-                    }
-                    shortcutLayout.setVisibility(View.VISIBLE);
-                }
-            }
-        };
-        h.post(task);
+    @Override
+    public void reload() {
+        loaderManager.restartLoader(ManagerUtils.ID_SHORTCUTS_LOADER, null, this);
     }
 
     public void clearOnItemLaunchedListener() {
@@ -115,29 +74,18 @@ public class ShortcutManager {
         this.onItemLaunchedListener = listener;
     }
 
-    private static class AppStats {
-        static Comparator<AppStats> COMPARATOR = new Comparator<AppStats>() {
-            @Override
-            public int compare(AppStats a1, AppStats a2) {
-                if (a1.count == a2.count) {
-                    return -Long.compare(a1.time, a2.time);
-                }
-                return -Long.compare(a1.count, a2.count);
-            }
-        };
-        final App app;
-        long count;
-        long time;
+    @Override
+    public Loader<List<Item>> onCreateLoader(int id, Bundle args) {
+        return new ShortcutsLoader(context, appManager);
+    }
 
-        private AppStats(App app, long count, long time) {
-            this.app = app;
-            this.count = count;
-            this.time = time;
+    @Override
+    public void onLoadFinished(Loader<List<Item>> loader, List<Item> data) {
+        super.onLoadFinished(loader, data);
+        for (int i = 0; i < ShortcutLayout.MAX_SHORTCUT_NUMBER && i < items.size(); i++) {
+            Item item = items.get(i);
+            shortcutLayout.setIcon(i, item.getIcon());
         }
-
-        @Override
-        public boolean equals(Object obj) {
-            return obj instanceof App && app.getLabel().equals(((App) obj).getLabel());
-        }
+        shortcutLayout.setVisibility(View.VISIBLE);
     }
 }

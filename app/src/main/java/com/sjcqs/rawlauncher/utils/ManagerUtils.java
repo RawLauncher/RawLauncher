@@ -19,6 +19,7 @@ public final class ManagerUtils {
     public final static int ID_APP_LOADER = 1;
     public final static int ID_DEVICE_SETTINGS_LOADER = 2;
     public final static int ID_SEARCH_LOADER = 3;
+    public static final int ID_SHORTCUTS_LOADER = 4;
 
     public final static int MANAGER_APPS = 0;
     public final static int MANAGER_DEVICE_SETTINGS = 1;

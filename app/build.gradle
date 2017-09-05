@@ -33,7 +33,7 @@ android {
         variant.outputs.each { output ->
             output.outputFile = new File(
                     output.outputFile.parent,
-                    output.outputFile.name.replace("app-release.apk", "${x}/${variant.applicationId}_${variant.versionName}_${new Date().format("dd-MM_HH.mm.ss")}.apk"))
+                    output.outputFile.name.replace("app-release.apk", "${x}/${variant.applicationId}_${vn}_${new Date().format("dd-MM_HH.mm.ss")}.apk"))
         }
     }
 }
