@@ -45,6 +45,7 @@ public class RawLauncher extends AppCompatActivity implements OnItemLaunchedList
     private SuggestionManager suggestionManager;
     private RecyclerView suggestionRecyclerView;
     private ShortcutManager shortcutManager;
+    private boolean shortcutsUpToDate = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,7 +188,12 @@ public class RawLauncher extends AppCompatActivity implements OnItemLaunchedList
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(suggestionRecyclerView);
         ShortcutLayout shortcutLayout = (ShortcutLayout) findViewById(R.id.shortcuts);
-        shortcutManager = new ShortcutManager(this, (AppManager) managers.get(ManagerUtils.MANAGER_APPS), shortcutLayout);
+        shortcutManager = new ShortcutManager(
+                this,
+                getSupportLoaderManager(),
+                (AppManager) managers.get(ManagerUtils.MANAGER_APPS),
+                shortcutLayout
+        );
 
         inputView.setOnActionDoneListener(new UserInputView.OnActionDoneListener() {
             @Override
@@ -245,6 +251,7 @@ public class RawLauncher extends AppCompatActivity implements OnItemLaunchedList
 
     private void updateItemStats(Item item) {
         if (item.canBeAShortcut()) {
+            shortcutsUpToDate = false;
             Log.d(TAG, "updateItemStats: " + item.getLabel());
             SharedPreferences pref =
                     PreferenceManager.getDefaultSharedPreferences(this);
@@ -271,7 +278,10 @@ public class RawLauncher extends AppCompatActivity implements OnItemLaunchedList
     protected void onResume() {
         super.onResume();
         inputView.showKeyboard(this);
-        shortcutManager.update();
+        if (!shortcutsUpToDate) {
+            shortcutManager.reload();
+            shortcutsUpToDate = true;
+        }
         if (inputView.getInput().length() == 0) {
             suggestionManager.clearSuggestions();
         }
