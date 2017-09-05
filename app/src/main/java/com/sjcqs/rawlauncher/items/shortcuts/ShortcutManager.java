@@ -11,7 +11,7 @@ import com.sjcqs.rawlauncher.items.Item;
 import com.sjcqs.rawlauncher.items.apps.AppManager;
 import com.sjcqs.rawlauncher.utils.ManagerUtils;
 import com.sjcqs.rawlauncher.utils.interfaces.Manager;
-import com.sjcqs.rawlauncher.utils.interfaces.OnItemLaunchedListener;
+import com.sjcqs.rawlauncher.utils.interfaces.OnItemClickedListener;
 import com.sjcqs.rawlauncher.utils.interfaces.Reloadable;
 import com.sjcqs.rawlauncher.views.ShortcutLayout;
 
@@ -26,7 +26,7 @@ public class ShortcutManager extends Manager implements Reloadable {
     private static final String TAG = ShortcutManager.class.getName();
     private final ShortcutLayout shortcutLayout;
     private final AppManager appManager;
-    private OnItemLaunchedListener onItemLaunchedListener;
+    private OnItemClickedListener onItemClickedListener;
 
     public ShortcutManager(
             final Context context, LoaderManager loaderManager,
@@ -48,10 +48,9 @@ public class ShortcutManager extends Manager implements Reloadable {
             public boolean onPressed(int id) {
                 try {
                     Item app = items.get(id);
-                    if (onItemLaunchedListener != null) {
-                        onItemLaunchedListener.onItemLaunched(app);
+                    if (onItemClickedListener != null) {
+                        onItemClickedListener.onItemClicked(app);
                     }
-                    context.startActivity(app.getIntent());
                     return true;
                 } catch (IndexOutOfBoundsException e) {
                     Log.w(TAG, "Shortcut #" + id + " doesn't exist", e);
@@ -67,11 +66,11 @@ public class ShortcutManager extends Manager implements Reloadable {
     }
 
     public void clearOnItemLaunchedListener() {
-        onItemLaunchedListener = null;
+        onItemClickedListener = null;
     }
 
-    public void setOnItemLaunchedListener(OnItemLaunchedListener listener) {
-        this.onItemLaunchedListener = listener;
+    public void setOnItemClickedListener(OnItemClickedListener listener) {
+        this.onItemClickedListener = listener;
     }
 
     @Override

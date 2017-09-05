@@ -101,7 +101,7 @@ public class UserInputView extends RelativeLayout {
         setHint(hint);
 
         if (requestFocus) {
-            showKeyboard(context);
+            showKeyboard();
         }
 
         userEditText.setOnTouchListener(new OnTouchListener() {
@@ -130,17 +130,17 @@ public class UserInputView extends RelativeLayout {
         clearInput();
     }
 
-    public void showKeyboard(Context context) {
+    public void showKeyboard() {
         userEditText.requestFocus();
         InputMethodManager imm =
-                (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(userEditText, InputMethodManager.SHOW_IMPLICIT);
     }
 
-    public void hideKeyboard(Context context) {
+    public void hideKeyboard() {
         userEditText.clearFocus();
         InputMethodManager imm =
-                (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(userEditText.getWindowToken(), InputMethodManager.SHOW_IMPLICIT);
     }
 

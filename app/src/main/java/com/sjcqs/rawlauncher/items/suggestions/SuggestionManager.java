@@ -21,7 +21,7 @@ import com.sjcqs.rawlauncher.items.Item;
 import com.sjcqs.rawlauncher.items.search.InputSearchManager;
 import com.sjcqs.rawlauncher.utils.ManagerUtils;
 import com.sjcqs.rawlauncher.utils.interfaces.Manager;
-import com.sjcqs.rawlauncher.utils.interfaces.OnItemLaunchedListener;
+import com.sjcqs.rawlauncher.utils.interfaces.OnItemClickedListener;
 import com.sjcqs.rawlauncher.utils.interfaces.Suggestor;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class SuggestionManager extends  RecyclerView.Adapter<SuggestionManager.I
     private final LoaderManager loaderManager;
     private final Collection<Manager> managers;
     private final InputSearchManager searchManager;
-    private OnItemLaunchedListener onItemLaunchedListener;
+    private OnItemClickedListener onItemClickedListener;
 
     private List<Suggestion> suggestions;
     private boolean idle = true;
@@ -84,10 +84,9 @@ public class SuggestionManager extends  RecyclerView.Adapter<SuggestionManager.I
             holder.setOnActionListener(new OnActionListener() {
                 @Override
                 public void onClicked() {
-                    if (onItemLaunchedListener != null) {
-                        onItemLaunchedListener.onItemLaunched(item.getItem());
+                    if (onItemClickedListener != null) {
+                        onItemClickedListener.onItemClicked(item.getItem());
                     }
-                    context.startActivity(item.getIntent());
                 }
 
                 @Override
@@ -110,11 +109,11 @@ public class SuggestionManager extends  RecyclerView.Adapter<SuggestionManager.I
     }
 
     public void clearOnItemLaunchedListener() {
-        onItemLaunchedListener = null;
+        onItemClickedListener = null;
     }
 
-    public void setOnItemLaunchedListener(OnItemLaunchedListener listener) {
-        this.onItemLaunchedListener = listener;
+    public void setOnItemClickedListener(OnItemClickedListener listener) {
+        this.onItemClickedListener = listener;
     }
 
     public Intent getIntent(int i) {
@@ -127,23 +126,21 @@ public class SuggestionManager extends  RecyclerView.Adapter<SuggestionManager.I
         }
     }
 
-    public void hideItem(Suggestion item) {
-        int pos = suggestions.indexOf(item);
-        notifyItemRemoved(pos);
-        suggestions.remove(item);
+    public Item uninstallApp(int position) {
+        Item item = getItem(position);
+        if (item.canBeUninstalled()) {
+            suggestions.remove(position);
+            notifyItemRemoved(position);
+            return item;
+        }
+        return null;
     }
 
-    public void uninstallApp(Suggestion suggestion) {
-        Item item = suggestion.getItem();
-        int pos = suggestions.indexOf(suggestion);
-        Intent intent = item.getUninstallIntent();
-        context.startActivity(intent);
-        suggestions.remove(suggestion);
-        notifyItemRemoved(pos);
-    }
-
-    public void hideItem(int position) {
-        hideItem(suggestions.get(position));
+    public Item hideItem(int position) {
+        Item item = getItem(position);
+        notifyItemRemoved(position);
+        suggestions.remove(position);
+        return item;
     }
 
     public Item getItem(int i) {

@@ -33,9 +33,9 @@ class ShortcutsLoader extends ItemLoader {
 
     @Override
     public List<Item> loadInBackground() {
-        List<AppStats> sortedApps = new ArrayList<>();
+        List<AppStats> frequentApps = new ArrayList<>();
         List<Item> shortcuts = new ArrayList<>(ShortcutLayout.MAX_SHORTCUT_NUMBER);
-        sortedApps.clear();
+        frequentApps.clear();
         List<Item> apps = appManager.getItems();
         for (Item app : apps) {
             SharedPreferences pref = PreferenceManager
@@ -50,17 +50,17 @@ class ShortcutsLoader extends ItemLoader {
 
             AppStats stats = new AppStats((App) app, count, time);
 
-            if (!sortedApps.contains(stats)) {
-                sortedApps.add(stats);
+            if (!frequentApps.contains(stats)) {
+                frequentApps.add(stats);
             }
         }
 
-        Collections.sort(sortedApps, AppStats.COMPARATOR);
+        Collections.sort(frequentApps, AppStats.FREQUENCE_COMPARATOR);
 
         shortcuts.clear();
         for (int i = 0; i < ShortcutLayout.MAX_SHORTCUT_NUMBER; i++) {
-            App app = sortedApps.get(i).app;
-            Log.d(TAG, app.getLabel() + ": " + i + " " + sortedApps.get(i).count + " " + sortedApps.get(i).time);
+            App app = frequentApps.get(i).app;
+            Log.d(TAG, app.getLabel() + ": " + i + " " + frequentApps.get(i).count + " " + frequentApps.get(i).time);
             shortcuts.add(app);
         }
         items = shortcuts;
@@ -92,7 +92,7 @@ class ShortcutsLoader extends ItemLoader {
 
 
     private static class AppStats {
-        static Comparator<AppStats> COMPARATOR = new Comparator<AppStats>() {
+        static Comparator<AppStats> FREQUENCE_COMPARATOR = new Comparator<AppStats>() {
             @Override
             public int compare(AppStats a1, AppStats a2) {
                 if (a1.count == a2.count) {
