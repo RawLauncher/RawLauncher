@@ -208,7 +208,6 @@ public class RawLauncher extends AppCompatActivity implements OnItemLaunchedList
             @Override
             public void onChildViewAttachedToWindow(View view) {
                 if (suggestionManager.getItemCount() > 0) {
-                    Log.d(TAG, "onChildViewAttachedToWindow");
                     suggestionRecyclerView.scrollToPosition(0);
                 }
             }
@@ -246,6 +245,7 @@ public class RawLauncher extends AppCompatActivity implements OnItemLaunchedList
 
     private void updateItemStats(Item item) {
         if (item.canBeAShortcut()) {
+            Log.d(TAG, "updateItemStats: " + item.getLabel());
             SharedPreferences pref =
                     PreferenceManager.getDefaultSharedPreferences(this);
             String label = item.getDiscriminator();
@@ -260,6 +260,11 @@ public class RawLauncher extends AppCompatActivity implements OnItemLaunchedList
                     .putLong(getString(R.string.count_shared_pref, label), count)
                     .apply();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        inputView.hideKeyboard(this);
     }
 
     @Override

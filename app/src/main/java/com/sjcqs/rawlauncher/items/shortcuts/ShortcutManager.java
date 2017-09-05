@@ -64,7 +64,6 @@ public class ShortcutManager {
     }
 
     public void update() {
-        shortcutLayout.setVisibility(View.GONE);
         final Handler h = new Handler();
         final Runnable task = new Runnable() {
             @Override
@@ -97,9 +96,9 @@ public class ShortcutManager {
                     shortcuts.clear();
                     for (int i = 0; i < ShortcutLayout.MAX_SHORTCUT_NUMBER; i++) {
                         App app = sortedApps.get(i).app;
-                        Log.d(TAG, app.getLabel() + ": " + i);
-                        shortcutLayout.setIcon(i, app.getIcon());
+                        Log.d(TAG, app.getLabel() + ": " + i + " " + sortedApps.get(i).count + " " + sortedApps.get(i).time);
                         shortcuts.add(app);
+                        shortcutLayout.setIcon(i, app.getIcon());
                     }
                     shortcutLayout.setVisibility(View.VISIBLE);
                 }
