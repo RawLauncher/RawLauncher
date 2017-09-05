@@ -102,8 +102,13 @@ public class ShortcutLayout extends RelativeLayout {
      * @param id   shortcut's id
      * @param icon icon given
      */
-    public void setIcon(int id, @NonNull Drawable icon) {
-        shortcutViews[id].setIcon(icon);
+    public void setIcon(final int id, @NonNull final Drawable icon) {
+        shortcutViews[id].post(new Runnable() {
+            @Override
+            public void run() {
+                shortcutViews[id].setIcon(icon);
+            }
+        });
     }
 
     public interface OnShortcutActionListener {

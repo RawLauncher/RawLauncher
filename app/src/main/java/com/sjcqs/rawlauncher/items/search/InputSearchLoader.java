@@ -18,15 +18,15 @@ import java.util.List;
 
 class InputSearchLoader extends ItemLoader {
     public static final double BASE_PRIORITY = 10;
-    private static final double LOW_PRIORITY = 15;
+    private static final double LOW_PRIORITY = 17;
     private static final double MEDIUM_PRIORITY = 16;
-    private static final double HIGH_PRIORITY = 17;
+    private static final double HIGH_PRIORITY = 15;
     private static final SearchData[] SEARCHES_DATA = {
             new SearchData("Play Store", "market://search?q=", null, R.drawable.ic_google_play_black_24dp, HIGH_PRIORITY),
             new SearchData("Google", "http://www.google.com/#q=", null, R.drawable.ic_google_black_24dp, HIGH_PRIORITY),
             new SearchData("Duck Duck Go", "https://duckduckgo.com/?q=", null, R.drawable.ic_duckduckgo_24dp, MEDIUM_PRIORITY),
             new SearchData("Youtube", "https://www.youtube.com/results?search_query=", null, R.drawable.ic_youtube_play_black_24dp, MEDIUM_PRIORITY),
-            new SearchData("Maps", "geo:0,0?q=", "com.google.android.apps.maps", R.drawable.ic_place_black_24dp, MEDIUM_PRIORITY),
+            new SearchData("Maps", "geo:0,0?q=", "com.google.android.apps.maps", R.drawable.ic_place_black_24dp, LOW_PRIORITY),
     };
 
     InputSearchLoader(Context context) {
