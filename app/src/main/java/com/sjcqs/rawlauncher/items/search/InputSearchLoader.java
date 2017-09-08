@@ -21,6 +21,7 @@ class InputSearchLoader extends ItemLoader {
     private static final double LOW_PRIORITY = 17;
     private static final double MEDIUM_PRIORITY = 16;
     private static final double HIGH_PRIORITY = 15;
+    private static final String labels = "(Play Store|Google|Duck Duck Go|Youtube|Maps)";
     private static final SearchData[] SEARCHES_DATA = {
             new SearchData("Play Store", "market://search?q=", null, R.drawable.ic_google_play_black_24dp, HIGH_PRIORITY),
             new SearchData("Google", "http://www.google.com/#q=", null, R.drawable.ic_google_black_24dp, HIGH_PRIORITY),

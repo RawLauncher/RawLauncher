@@ -26,6 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/user_input_view"
+        android:elevation="2dp"
         android:orientation="horizontal"
         android:scrollbars="vertical"
         android:visibility="invisible"
@@ -37,6 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="@dimen/spacing_small"
+        android:elevation="2dp"
         app:inputHint="@string/hint_launch"
         app:inputIcon="@drawable/ic_launch_black_36dp"
         app:showClearButton="false" />

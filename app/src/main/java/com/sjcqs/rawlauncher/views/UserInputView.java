@@ -27,7 +27,9 @@ public class UserInputView extends RelativeLayout {
     private EditText userEditText;
     private ImageButton iconButton;
     private ImageButton clearButton;
-    private OnActionDoneListener onActionDoneListener;
+    private ImageButton upButton;
+    private ImageButton downButton;
+    private OnInputActionListener onInputActionListener;
 
     private GestureDetectorCompat detector;
     private boolean requestFocus = true;
@@ -75,6 +77,8 @@ public class UserInputView extends RelativeLayout {
         userEditText = findViewById(R.id.user_input);
         iconButton = findViewById(R.id.launcher_icon);
         clearButton = findViewById(R.id.button_clear);
+        upButton = findViewById(R.id.button_up);
+        downButton = findViewById(R.id.button_down);
 
         if (imageDrawable != null){
             setIconButton(imageDrawable);
@@ -87,6 +91,24 @@ public class UserInputView extends RelativeLayout {
             @Override
             public void onClick(View view) {
                 clearInput();
+            }
+        });
+
+        upButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onInputActionListener != null) {
+                    onInputActionListener.onUpPressed();
+                }
+            }
+        });
+
+        downButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onInputActionListener != null) {
+                    onInputActionListener.onDownPressed();
+                }
             }
         });
 
@@ -115,8 +137,8 @@ public class UserInputView extends RelativeLayout {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
                 if (actionId == EditorInfo.IME_ACTION_GO){
-                    if (onActionDoneListener != null){
-                        boolean consumed = onActionDoneListener.onActionDone(userEditText.getText().toString());
+                    if (onInputActionListener != null) {
+                        boolean consumed = onInputActionListener.onActionDone(userEditText.getText().toString());
                         if (consumed) {
                             clearInput();
                         }
@@ -178,12 +200,12 @@ public class UserInputView extends RelativeLayout {
         userEditText.removeTextChangedListener(watcher);
     }
 
-    public void setOnActionDoneListener(OnActionDoneListener onActionDoneListener) {
-        this.onActionDoneListener = onActionDoneListener;
+    public void setOnInputActionListener(OnInputActionListener onInputActionListener) {
+        this.onInputActionListener = onInputActionListener;
     }
 
-    public void clearOnActionDoneListener(){
-        onActionDoneListener = null;
+    public void clearOnInputActionListener() {
+        onInputActionListener = null;
     }
 
     public String getInput() {
@@ -200,13 +222,17 @@ public class UserInputView extends RelativeLayout {
         });
     }
 
-    public interface OnActionDoneListener{
+    public interface OnInputActionListener {
         /**
          * Call when the action done button is pressed
          * @param str the input text
          * @return true if the action was consumed, false otherwise
          */
         boolean onActionDone(String str);
+
+        void onUpPressed();
+
+        void onDownPressed();
     }
 
     private class InputGestureListener extends GestureDetector.SimpleOnGestureListener {

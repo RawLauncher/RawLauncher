@@ -34,12 +34,14 @@ class MainManager implements OnItemClickedListener, Reloadable, Suggestor {
     private final Map<Integer, Manager> managers;
     private final SuggestionManager suggestionManager;
     private final ShortcutManager shortcutManager;
+    private final HistoryManager historyManager;
+
     private final UserInputView inputView;
     private boolean shortcutsUpToDate = false;
 
     MainManager(
             RawLauncher activity,
-            UserInputView inputView,
+            final UserInputView inputView,
             final RecyclerView suggestionRecyclerView,
             ShortcutLayout shortcutLayout
     ) {
@@ -61,6 +63,27 @@ class MainManager implements OnItemClickedListener, Reloadable, Suggestor {
         suggestionManager.setOnItemClickedListener(this);
 
         shortcutManager.setOnItemClickedListener(this);
+
+        inputView.setOnInputActionListener(new UserInputView.OnInputActionListener() {
+            @Override
+            public boolean onActionDone(String str) {
+                return launchItem(0);
+            }
+
+            @Override
+            public void onUpPressed() {
+                String str = historyManager.previous();
+                inputView.setInput(str);
+            }
+
+            @Override
+            public void onDownPressed() {
+                String str = historyManager.next();
+                inputView.setInput(str);
+            }
+        });
+
+        historyManager = new HistoryManager(raw);
     }
 
     private void updateItemStats(Item item) {
@@ -85,14 +108,16 @@ class MainManager implements OnItemClickedListener, Reloadable, Suggestor {
 
     @Override
     public void onItemClicked(Item item) {
+        historyManager.push(item.getLabel());
         inputView.clearInput();
         inputView.hideKeyboard();
-        raw.startActivity(item.getIntent());
         updateItemStats(item);
+        raw.startActivity(item.getIntent());
     }
 
     @Override
     public void reload() {
+        historyManager.reload();
         if (!shortcutsUpToDate) {
             shortcutManager.reload();
             shortcutsUpToDate = true;

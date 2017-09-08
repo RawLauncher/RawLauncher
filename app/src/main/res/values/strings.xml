@@ -14,4 +14,8 @@
     <string name="hide_suggestion_content_desc">Hide suggestion</string>
     <string name="uninstall_suggestion_content_desc">Remove suggestion</string>
     <string name="hide_shared_pref">%1$s : hidden</string>
+    <string name="history_size_shared_preferences">History size</string>
+    <string name="history_item_shared_preferences">History item %1$d</string>
+    <string name="contentDescription_button_up">Next suggestion</string>
+    <string name="contentDescription_button_down">Previous suggestion</string>
 </resources>

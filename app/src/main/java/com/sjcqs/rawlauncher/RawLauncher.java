@@ -60,13 +60,6 @@ public class RawLauncher extends AppCompatActivity {
             }
         });
 
-        inputView.setOnActionDoneListener(new UserInputView.OnActionDoneListener() {
-            @Override
-            public boolean onActionDone(String str) {
-                return mainManager.launchItem(0);
-            }
-        });
-
         ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(
                 0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             int margin;
