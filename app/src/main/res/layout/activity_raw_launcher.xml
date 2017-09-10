@@ -32,6 +32,27 @@
         android:visibility="invisible"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
 
+    <LinearLayout
+        android:id="@+id/settings_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/user_input_view"
+        android:layout_alignStart="@+id/user_input_view"
+        android:elevation="6dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <Button
+            style="@style/ParamButtonStyle"
+            android:drawableStart="@drawable/ic_eye_off_white_18dp"
+            android:text="Hide apps" />
+
+        <Button
+            style="@style/ParamButtonStyle"
+            android:drawablePadding="@dimen/spacing_tiny"
+            android:drawableStart="@drawable/ic_wallpaper_white_18dp"
+            android:text="Wallpaper" />
+    </LinearLayout>
     <com.sjcqs.rawlauncher.views.UserInputView
         android:id="@+id/user_input_view"
         android:layout_width="match_parent"

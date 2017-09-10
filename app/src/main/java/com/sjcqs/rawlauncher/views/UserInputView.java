@@ -34,19 +34,21 @@ public class UserInputView extends RelativeLayout {
     private GestureDetectorCompat detector;
     private boolean requestFocus = true;
 
-    public UserInputView(Context context) {
-        super(context);
-        init(context,null,0);
+    public UserInputView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        if (!isInEditMode()) {
+            init(context, attrs, defStyle);
+        } else {
+            LayoutInflater.from(context).inflate(R.layout.view_user_input, this);
+        }
     }
 
     public UserInputView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context, attrs, 0);
+        this(context, attrs, 0);
     }
 
-    public UserInputView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init(context, attrs, defStyle);
+    public UserInputView(Context context) {
+        this(context, null, 0);
     }
 
     private void init(final Context context, AttributeSet attrs, int defStyle) {
@@ -160,10 +162,9 @@ public class UserInputView extends RelativeLayout {
     }
 
     public void hideKeyboard() {
-        userEditText.clearFocus();
         InputMethodManager imm =
                 (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(userEditText.getWindowToken(), InputMethodManager.SHOW_IMPLICIT);
+        imm.hideSoftInputFromWindow(userEditText.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     public void setHint(final String hint) {

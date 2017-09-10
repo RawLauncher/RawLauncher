@@ -18,4 +18,6 @@
     <string name="history_item_shared_preferences">History item %1$d</string>
     <string name="contentDescription_button_up">Next suggestion</string>
     <string name="contentDescription_button_down">Previous suggestion</string>
+    <string name="change_the_wallpaper">Change the wallpaper</string>
+    <string name="show_hidden_apps">Show hidden apps</string>
 </resources>

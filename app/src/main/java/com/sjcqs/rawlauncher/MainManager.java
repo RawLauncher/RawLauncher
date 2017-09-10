@@ -2,6 +2,7 @@ package com.sjcqs.rawlauncher;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v7.widget.RecyclerView;
@@ -107,12 +108,18 @@ class MainManager implements OnItemClickedListener, Reloadable, Suggestor {
     }
 
     @Override
-    public void onItemClicked(Item item) {
+    public void onItemClicked(final Item item) {
         historyManager.push(item.getLabel());
         inputView.clearInput();
         inputView.hideKeyboard();
         updateItemStats(item);
-        raw.startActivity(item.getIntent());
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                raw.startActivity(item.getIntent());
+            }
+        }, 100);
+
     }
 
     @Override

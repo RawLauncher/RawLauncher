@@ -25,4 +25,15 @@
         <item name="android:textColor">@color/color_white</item>
     </style>
 
+    <style name="ParamButtonStyle">
+        <item name="android:background">@drawable/button_shape</item>
+        <item name="android:textColor">@color/color_white</item>
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:buttonTint">@color/color_white</item>
+        <item name="android:layout_width">@dimen/button_width_short</item>
+        <item name="android:layout_height">@dimen/button_height_short</item>
+        <item name="android:paddingStart">@dimen/spacing_small</item>
+        <item name="android:layout_marginBottom">@dimen/spacing_tiny</item>
+    </style>
+
 </resources>

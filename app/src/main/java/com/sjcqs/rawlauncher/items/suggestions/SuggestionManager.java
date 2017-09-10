@@ -144,11 +144,21 @@ public class SuggestionManager extends  RecyclerView.Adapter<SuggestionManager.I
     }
 
     public Item getItem(int i) {
-        return suggestions.get(i).getItem();
+        try {
+            return suggestions.get(i).getItem();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            Log.w(TAG, "getItem: ", e);
+            return null;
+        }
     }
 
     public Suggestion getSuggestion(int position) {
-        return suggestions.get(position);
+        try {
+            return suggestions.get(position);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            Log.w(TAG, "getSuggestion: ", e);
+            return null;
+        }
     }
 
     @Override
