@@ -2,7 +2,7 @@
 <resources>
 
     <style name="NoBackgroundImageButtonStyleTinted">
-        <item name="android:tint">@color/color_secondary</item>
+        <item name="android:tint">@color/color_secondary_light</item>
         <item name="android:background">@null</item>
     </style>
 

@@ -12,6 +12,13 @@ public final class StringUtil {
     private static final double LONGER_PENALTY = .05d;
 
     public static double canBeSuggested(String input, String name){
+        if (input.length() == 0) {
+            return Double.MAX_VALUE;
+        }
+        if (input.length() == 1) {
+            return input.equalsIgnoreCase(name) ? 1 : 0;
+        }
+
         input = normalize(input); name = normalize(name);
         double distance = levenshteinDistance(input,name);
         double matchDistance = Double.MAX_VALUE;
@@ -39,6 +46,7 @@ public final class StringUtil {
     private static double levenshteinDistance(String a, String b){
         a = a.replaceAll("\\s","");
         b = b.replaceAll("\\s","");
+
         int d[][] = new int[a.length()][b.length()];
 
         for (int i = 0; i < a.length(); i++) {

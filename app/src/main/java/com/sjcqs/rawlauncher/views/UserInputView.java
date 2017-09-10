@@ -27,24 +27,28 @@ public class UserInputView extends RelativeLayout {
     private EditText userEditText;
     private ImageButton iconButton;
     private ImageButton clearButton;
-    private OnActionDoneListener onActionDoneListener;
+    private ImageButton upButton;
+    private ImageButton downButton;
+    private OnInputActionListener onInputActionListener;
 
     private GestureDetectorCompat detector;
     private boolean requestFocus = true;
 
-    public UserInputView(Context context) {
-        super(context);
-        init(context,null,0);
+    public UserInputView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        if (!isInEditMode()) {
+            init(context, attrs, defStyle);
+        } else {
+            LayoutInflater.from(context).inflate(R.layout.view_user_input, this);
+        }
     }
 
     public UserInputView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context, attrs, 0);
+        this(context, attrs, 0);
     }
 
-    public UserInputView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init(context, attrs, defStyle);
+    public UserInputView(Context context) {
+        this(context, null, 0);
     }
 
     private void init(final Context context, AttributeSet attrs, int defStyle) {
@@ -75,6 +79,8 @@ public class UserInputView extends RelativeLayout {
         userEditText = findViewById(R.id.user_input);
         iconButton = findViewById(R.id.launcher_icon);
         clearButton = findViewById(R.id.button_clear);
+        upButton = findViewById(R.id.button_up);
+        downButton = findViewById(R.id.button_down);
 
         if (imageDrawable != null){
             setIconButton(imageDrawable);
@@ -90,6 +96,24 @@ public class UserInputView extends RelativeLayout {
             }
         });
 
+        upButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onInputActionListener != null) {
+                    onInputActionListener.onUpPressed();
+                }
+            }
+        });
+
+        downButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onInputActionListener != null) {
+                    onInputActionListener.onDownPressed();
+                }
+            }
+        });
+
         /*iconButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,7 +125,7 @@ public class UserInputView extends RelativeLayout {
         setHint(hint);
 
         if (requestFocus) {
-            showKeyboard(context);
+            showKeyboard();
         }
 
         userEditText.setOnTouchListener(new OnTouchListener() {
@@ -115,8 +139,8 @@ public class UserInputView extends RelativeLayout {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
                 if (actionId == EditorInfo.IME_ACTION_GO){
-                    if (onActionDoneListener != null){
-                        boolean consumed = onActionDoneListener.onActionDone(userEditText.getText().toString());
+                    if (onInputActionListener != null) {
+                        boolean consumed = onInputActionListener.onActionDone(userEditText.getText().toString());
                         if (consumed) {
                             clearInput();
                         }
@@ -130,18 +154,17 @@ public class UserInputView extends RelativeLayout {
         clearInput();
     }
 
-    public void showKeyboard(Context context) {
+    public void showKeyboard() {
         userEditText.requestFocus();
         InputMethodManager imm =
-                (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(userEditText, InputMethodManager.SHOW_IMPLICIT);
     }
 
-    public void hideKeyboard(Context context) {
-        userEditText.clearFocus();
+    public void hideKeyboard() {
         InputMethodManager imm =
-                (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(userEditText.getWindowToken(), InputMethodManager.SHOW_IMPLICIT);
+                (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(userEditText.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     public void setHint(final String hint) {
@@ -178,12 +201,12 @@ public class UserInputView extends RelativeLayout {
         userEditText.removeTextChangedListener(watcher);
     }
 
-    public void setOnActionDoneListener(OnActionDoneListener onActionDoneListener) {
-        this.onActionDoneListener = onActionDoneListener;
+    public void setOnInputActionListener(OnInputActionListener onInputActionListener) {
+        this.onInputActionListener = onInputActionListener;
     }
 
-    public void clearOnActionDoneListener(){
-        onActionDoneListener = null;
+    public void clearOnInputActionListener() {
+        onInputActionListener = null;
     }
 
     public String getInput() {
@@ -200,13 +223,17 @@ public class UserInputView extends RelativeLayout {
         });
     }
 
-    public interface OnActionDoneListener{
+    public interface OnInputActionListener {
         /**
          * Call when the action done button is pressed
          * @param str the input text
          * @return true if the action was consumed, false otherwise
          */
         boolean onActionDone(String str);
+
+        void onUpPressed();
+
+        void onDownPressed();
     }
 
     private class InputGestureListener extends GestureDetector.SimpleOnGestureListener {

@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/button_height_normal">
+    android:layout_height="@dimen/button_height_normal"
+    android:background="@color/color_primary_dark_transparent">
 
     <ImageButton
         android:id="@+id/launcher_icon"
@@ -18,29 +19,57 @@
 
     <EditText
         android:id="@+id/user_input"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/button_height_normal"
         android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/launcher_icon"
-        android:layout_toStartOf="@+id/button_clear"
+        android:layout_toStartOf="@+id/buttons_layout"
         android:background="@null"
         android:ems="10"
         android:hint="@string/hint_launch"
         android:imeOptions="actionGo|flagNoFullscreen"
-        android:inputType="textNoSuggestions|textShortMessage"
-        android:isScrollContainer="true"
+        android:inputType="textNoSuggestions|textImeMultiLine"
+        android:isScrollContainer="false"
         android:textColorHint="@color/color_secondary_light"
         android:textCursorDrawable="@drawable/user_input_cursor" />
 
-    <ImageButton
-        android:id="@+id/button_clear"
-        style="@style/NoBackgroundImageButtonStyleTinted"
+    <LinearLayout
+        android:id="@+id/buttons_layout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="@dimen/spacing_small"
-        android:layout_marginStart="@dimen/spacing_small"
-        android:contentDescription="@string/contentDescription_button_clear"
-        android:src="@drawable/ic_delete_sweep_black_36dp" />
+        android:layout_centerVertical="true">
+
+        <ImageButton
+            android:id="@+id/button_up"
+            style="@style/NoBackgroundImageButtonStyleTinted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/spacing_tiny"
+            android:contentDescription="@string/contentDescription_button_up"
+            android:src="@drawable/ic_keyboard_arrow_up_black_36dp" />
+
+        <ImageButton
+            android:id="@+id/button_down"
+            style="@style/NoBackgroundImageButtonStyleTinted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/spacing_tiny"
+            android:contentDescription="@string/contentDescription_button_down"
+            android:src="@drawable/ic_keyboard_arrow_down_black_36dp" />
+
+        <ImageButton
+            android:id="@+id/button_clear"
+            style="@style/NoBackgroundImageButtonStyleTinted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/spacing_small"
+            android:layout_marginStart="@dimen/spacing_small"
+            android:contentDescription="@string/contentDescription_button_clear"
+            android:src="@drawable/ic_delete_sweep_black_36dp"
+            android:visibility="gone" />
+    </LinearLayout>
 </RelativeLayout>

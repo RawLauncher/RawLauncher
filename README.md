@@ -24,4 +24,3 @@ A minimalistic launcher, you just tap the name of the application to launch it.
 ![screenshot](https://github.com/RawLauncher/RawLauncher/blob/master/.github/device-2017-09-05-120841.png)
 ![screenshot](https://github.com/RawLauncher/RawLauncher/blob/master/.github/device-2017-09-05-130921.png)
 ![screenshot](https://github.com/RawLauncher/RawLauncher/blob/master/.github/device-2017-09-05-130947.png)
-

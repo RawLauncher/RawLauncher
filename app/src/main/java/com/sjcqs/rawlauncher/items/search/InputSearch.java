@@ -35,6 +35,7 @@ class InputSearch extends Item {
     }
 
     public void setInput(String input) {
+        input = input.replace(name + ":", "");
         label = name + ": " + input;
         this.input = Uri.encode(input);
     }
