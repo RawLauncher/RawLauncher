@@ -13,3 +13,14 @@ A minimalistic launcher, you just tap the name of the application to launch it.
 * Swipe right on suggestion to hide
 * Swipe left on suggestion to uninstall apps
 * Swipe left on input to erase
+
+## Screenshots
+![screenshot](https://github.com/RawLauncher/RawLauncher/blob/master/.github/device-2017-09-02-150303.png)
+![screenshot](https://github.com/RawLauncher/RawLauncher/blob/master/.github/device-2017-09-02-150957.png)
+![screenshot](https://github.com/RawLauncher/RawLauncher/blob/master/.github/device-2017-09-02-151019.png)
+![screenshot](https://github.com/RawLauncher/RawLauncher/blob/master/.github/device-2017-09-02-151056.png)
+![screenshot](https://github.com/RawLauncher/RawLauncher/blob/master/.github/device-2017-09-04-123907.png)
+![screenshot](https://github.com/RawLauncher/RawLauncher/blob/master/.github/device-2017-09-04-123934.png)
+![screenshot](https://github.com/RawLauncher/RawLauncher/blob/master/.github/device-2017-09-05-120841.png)
+![screenshot](https://github.com/RawLauncher/RawLauncher/blob/master/.github/device-2017-09-05-130921.png)
+![screenshot](https://github.com/RawLauncher/RawLauncher/blob/master/.github/device-2017-09-05-130947.png)
