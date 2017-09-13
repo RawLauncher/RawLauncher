@@ -31,21 +31,34 @@ public class InputSearchManager extends Manager {
 
     @Override
     public Collection<Suggestion> getSuggestions(String input) {
+        String searchLabel = ""; // if the user enter <label>: value or it's from history
+        for (String label : InputSearchLoader.getLabel()) {
+            if (input.matches(label + ": .*")) {
+                searchLabel = label;
+            }
+            input = input.replace(label + ":", "");
+        }
+
         List<Suggestion> suggestions = new ArrayList<>();
         for (Item item : items) {
             InputSearch search = (InputSearch) item;
-            double rate = StringUtil.canBeSuggested(search.getDiscriminator(), input);
-            if (rate <= StringUtil.MAX_RATE) {
-                if (rate != 0) {
-                    rate += InputSearchLoader.BASE_PRIORITY;
-                }
+            if (search.getDiscriminator().equals(searchLabel)) {
+                search.setInput(input);
+                Suggestion suggestion = new Suggestion(search, 0);
+                suggestions.add(suggestion);
             } else {
-                rate = search.getPriority();
+                double rate = StringUtil.canBeSuggested(search.getDiscriminator(), input);
+                if (rate <= StringUtil.MAX_RATE) {
+                    if (rate != 0) {
+                        rate += InputSearchLoader.BASE_PRIORITY;
+                    }
+                } else {
+                    rate = search.getPriority();
+                }
+                search.setInput(input);
+                Suggestion suggestion = new Suggestion(search, rate);
+                suggestions.add(suggestion);
             }
-            InputSearch inputSearch = (InputSearch) item;
-            inputSearch.setInput(input);
-            Suggestion suggestion = new Suggestion(inputSearch, rate);
-            suggestions.add(suggestion);
         }
         return suggestions;
     }
