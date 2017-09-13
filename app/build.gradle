@@ -7,8 +7,8 @@ android {
         applicationId "com.sjcqs.rawlauncher"
         minSdkVersion 22
         targetSdkVersion 26
-        versionCode 8
-        versionName "0.4b"
+        versionCode 11
+        versionName "0.5a"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
