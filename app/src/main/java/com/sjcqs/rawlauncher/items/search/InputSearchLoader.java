@@ -10,6 +10,7 @@ import com.sjcqs.rawlauncher.items.Item;
 import com.sjcqs.rawlauncher.items.ItemLoader;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -32,6 +33,14 @@ class InputSearchLoader extends ItemLoader {
 
     InputSearchLoader(Context context) {
         super(context);
+    }
+
+    public static Collection<String> getLabel() {
+        List<String> strings = new ArrayList<>(SEARCHES_DATA.length);
+        for (SearchData data : SEARCHES_DATA) {
+            strings.add(data.label);
+        }
+        return strings;
     }
 
     @Override

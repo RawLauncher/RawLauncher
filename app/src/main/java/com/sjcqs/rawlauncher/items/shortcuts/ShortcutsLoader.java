@@ -93,7 +93,6 @@ class ShortcutsLoader extends ItemLoader {
 
     private static class AppStats {
         static Comparator<AppStats> FREQUENCE_COMPARATOR = new Comparator<AppStats>() {
-
             @Override
             public int compare(AppStats a1, AppStats a2) {
                 if (a1.count == a2.count) {
